@@ -1,0 +1,55 @@
+{
+  "author": "Triply <info@triply.cc>",
+  "dependencies": {
+    "@triplydb/ratt": "latest",
+    "chai": "^4.3.6",
+    "eslint-plugin-lodash": "^7.3.0",
+    "fs-extra": "^10.0.0",
+    "lodash": "^4.17.20",
+    "mocha": "^10.0.0",
+    "node-fetch": "^3.0.0",
+    "source-map-support": "^0.5.20",
+    "ts-essentials": "^9.1.2"
+  },
+  "description": "ETL for mcal",
+  "devDependencies": {
+    "@types/chai": "^4.2.21",
+    "@types/fs-extra": "^9.0.12",
+    "@types/lodash": "^4.14.173",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "16",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "^26.5.3",
+    "husky": "8.0.1",
+    "lint-staged": "^13.0.1",
+    "prettier": "^2.4.1",
+    "typescript": "^4.7.4"
+  },
+  "lint-staged": {
+    "*.ts?(x)": [
+      "yarn run util:lint:precommit"
+    ]
+  },
+  "main": "lib/main.js",
+  "name": "mcal",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig-build.json",
+    "dev": "tsc -p ./tsconfig-build.json --watch --preserveWatchOutput",
+    "postversion": "versionToBranch",
+    "postinstall": "husky install ./config/hooks",
+    "test": "mocha $(find ./lib -name '*-test.js') --require source-map-support/register",
+    "util:lint": "ESLINT_STRICT=true ESLINT_EXPENSIVE=true eslint --ext .tsx --ext .ts ./src",
+    "util:lint:precommit": "ESLINT_STRICT=true eslint",
+    "util:validateTs": "tsc -p ./tsconfig-build.json --noEmit",
+    "util:validateTs:watch": "tsc -p ./tsconfig-build.json --noEmit --watch --preserveWatchOutput"
+  },
+  "version": "1.0.0",
+  "packageManager": "yarn@3.2.1",
+  "resolutions": {
+    "@types/node": "16.11.7"
+  }
+}

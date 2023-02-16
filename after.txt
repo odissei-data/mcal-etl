@@ -1,0 +1,1 @@
+IMPORTANT: If this is an ETL that external customers are given access to, then make sure to follow the documentation here: https://git.triply.cc/triply/documentation/-/wikis/pages/Configure-access-to-the-RATT-package

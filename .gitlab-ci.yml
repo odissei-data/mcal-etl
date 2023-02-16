@@ -1,0 +1,63 @@
+include:
+  - project: 'shared/ci-utils'
+    file: '.yarn.yml'
+
+default: 
+  tags: 
+    - etl
+
+stages:
+  - install
+  - test
+  - run
+
+image: node:16.17.0-bullseye-slim
+
+install:
+  stage: install
+  cache: !reference [.readWriteYarnCache]
+  script: !reference [.installYarnDeps]
+
+test:
+  stage: test
+  cache: !reference [.readOnlyYarnCache]
+  script:
+    - yarn install
+    - yarn run util:validateTs
+    - yarn run util:lint
+  only:
+    variables:
+      - $ENV == null
+
+acceptance:
+  stage: run
+  interruptible: true
+  cache: !reference [.readOnlyYarnCache]
+  artifacts:
+    name: "$CI_JOB_NAME-ratt-logs"
+    when: always
+    paths:
+      - logs
+  script:
+    - yarn install
+    - yarn build
+    - yarn ratt ./lib/main.js --verbose --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
+  rules:
+    - if: $ENV == $CI_JOB_NAME
+
+production:
+  stage: run
+  interruptible: true
+  cache: !reference [.readOnlyYarnCache]
+  artifacts:
+    name: "$CI_JOB_NAME-ratt-logs"
+    when: always
+    paths:
+      - logs
+  script:
+    - yarn install
+    - yarn build
+    - yarn ratt ./lib/main.js --verbose --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
+  rules:
+    - if: $ENV == $CI_JOB_NAME
+
