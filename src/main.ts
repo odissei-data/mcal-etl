@@ -20,13 +20,13 @@ const destination = {
   account:
     Etl.environment === environments.Development
       ? undefined
-      : 'my-account',
+      : 'odissei',
   dataset:
     Etl.environment === environments.Acceptance
-      ? 'my-dataset-acceptance'
+      ? 'mcal-acceptance'
       : Etl.environment === environments.Testing
-        ? 'my-dataset-testing'
-        : 'my-dataset',
+        ? 'mcal-testing'
+        : 'mcal',
 }
 
 export default async function (): Promise<Etl> {
