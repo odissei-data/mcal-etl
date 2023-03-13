@@ -1,5 +1,5 @@
-import { environments, fromXlsx, logRecord, Ratt as Etl, toTriplyDb } from '@triplydb/ratt'
-import { dct } from '@triplydb/ratt/lib/vocab'
+import { a, addIri, environments, fromXlsx, iri, logRecord, pairs, Ratt as Etl, toTriplyDb } from '@triplydb/ratt'
+import { bibo, dct } from '@triplydb/ratt/lib/vocab'
 
 // Declare prefixes.
 const prefix_base = Etl.prefixer('https://example.org/')
@@ -32,6 +32,21 @@ export default async function (): Promise<Etl> {
     fromXlsx(Etl.Source.TriplyDb.asset('odissei', 'mcal', {
       name: '20220610_MCAL_Inventory_ContentAnalysis.xlsx',
     })),
+
+    addIri({
+      prefix: prefix.id,
+      content: 'JournalID',
+      key: '_journal',
+    }),
+    pairs(iri(prefix.id, 'ArticleID'),
+      [a, bibo.AcademicArticle],
+      [dct.title, 'Title Article'],
+      [dct.isPartOf, '_journal'],
+    ),
+    pairs('_journal',
+      [a, bibo.Journal],
+      [dct.title, 'Journal'],
+    ),
 
     logRecord(),
 
