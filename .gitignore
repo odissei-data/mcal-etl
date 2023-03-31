@@ -1,3 +1,9 @@
+etl.err
+etl.trace*
+# Do not accidentally commit `.etl/.env` which may contain private a private API Token.
+.etl*
+.env*
+
 *.log
 ratt.err
 ratt.trace*

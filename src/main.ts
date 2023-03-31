@@ -1,14 +1,16 @@
 // Import middlewares.
-import { a, concat, environments, fromJson, iri, literal, pairs, Ratt as Etl, str, toTriplyDb, validateShacl } from '@triplydb/ratt'
+import { environments, fromJson, Etl, toTriplyDb, declarePrefix, Source } from '@triplyetl/etl/generic'
+import { concat, iri, literal, pairs, str } from '@triplyetl/etl/ratt'
+import { validate } from '@triplyetl/etl/shacl'
 // Import vocabularies.
-import { foaf, xsd } from '@triplydb/ratt/lib/vocab'
+import { a, foaf, xsd } from '@triplyetl/etl/vocab'
 
 // Declare prefixes.
-const prefix_base = Etl.prefixer('https://example.org/')
-const prefix_id = Etl.prefixer(prefix_base('id/'))
+const prefix_base = declarePrefix('https://example.org/')
+const prefix_id = declarePrefix(prefix_base('id/'))
 const prefix = {
   id: prefix_id,
-  graph: Etl.prefixer(prefix_id('graph/')),
+  graph: declarePrefix(prefix_id('graph/')),
 }
 
 // Declare graph names.
@@ -52,7 +54,7 @@ export default async function (): Promise<Etl> {
     ),
 
     // Validation ensures that your instance data follows the data model.
-    validateShacl(Etl.Source.file('static/model.trig')),
+    validate(Source.file('static/model.trig')),
 
     // Publish your data in TriplyDB.
     toTriplyDb(destination),

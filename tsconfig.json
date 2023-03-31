@@ -11,7 +11,8 @@
     "removeComments": true,
     "listFiles": false,
     "outDir": "./lib",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "moduleResolution": "nodenext"
   },
   "compileOnSave": true,
   //Include the eslintrc file, as eslint uses the typescript parser, and it'll fail when it tries to lint itself

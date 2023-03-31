@@ -2089,7 +2089,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@elastic/elasticsearch@npm:^8.4.0":
+"@elastic/elasticsearch@npm:^8.4.0, @elastic/elasticsearch@npm:^8.6.0":
   version: 8.6.0
   resolution: "@elastic/elasticsearch@npm:8.6.0"
   dependencies:
@@ -2371,27 +2371,61 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@triplydb/data-factory@npm:^1.0.0, @triplydb/data-factory@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@triplydb/data-factory@npm:1.2.1::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Fdata-factory%2F-%2F%40triplydb%2Fdata-factory-1.2.1.tgz"
+"@triply/utils@npm:^1.4.2":
+  version: 1.4.2
+  resolution: "@triply/utils@npm:1.4.2"
+  dependencies:
+    "@elastic/elasticsearch": ^8.6.0
+    "@types/jsonld": ^1.5.8
+    "@types/wellknown": ^0.5.4
+    autocast: 0.0.4
+    deepdash: ^5.3.9
+    find-up: 5.0.0
+    fs-extra: ^10.1.0
+    jsonld: ^8.1.0
+    lodash: ^4.17.21
+    n3: ^1.16.3
+    numeral: ^2.0.6
+    pumpify: ^2.0.1
+    rdf-string: ^1.6.2
+    source-map-support: ^0.5.21
+    sparqljs: 3.6.2
+    through2: ^4.0.2
+    ts-essentials: ^9.3.0
+    url-parse: ^1.5.10
+    wellknown: ^0.5.0
+    yaml: ^2.2.1
+  bin:
+    auditor: ./lib/bin/auditor.js
+    calverIncrement: ./lib/bin/calverIncrement.js
+    ensureCalver: ./lib/bin/ensureCalver.js
+    isCleanBranch: ./lib/bin/isCleanBranch.js
+    versionToBranch: ./lib/bin/versionToBranch.js
+  checksum: b20534f9500b70bd5524edcec2f7110d4eeb73e2222682bbe2382e9a5a1760704200051124297dd4f768cc90aab4c17484f84a835aa135fad9a43529a0684248
+  languageName: node
+  linkType: hard
+
+"@triplydb/data-factory@npm:^1.2.3, @triplydb/data-factory@npm:^1.2.7":
+  version: 1.2.7
+  resolution: "@triplydb/data-factory@npm:1.2.7::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Fdata-factory%2F-%2F%40triplydb%2Fdata-factory-1.2.7.tgz"
   dependencies:
     "@rdfjs/types": ^1.1.0
     "@sozialhelden/ietf-language-tags": ^5.4.2
-    "@triplydb/iri": ^1.0.0
-    "@triplydb/recognized-datatypes": ^0.1.0
+    "@triplydb/iri": ^1.0.1
+    "@triplydb/recognized-datatypes": ^0.2.0
     memoizee: ^0.4.15
     pumpify: ^2.0.1
     ts-essentials: ^9.3.0
     uuid: ^9.0.0
-  checksum: 17f3760543a5c98df07a5bd1ed67eb833d7c6000e7fb2cf1651f7643d316a44481355abcd84d7cb25797d725dbbc0390a6dfba9c90329348c53f21976e632ef2
+  checksum: a8eed5bbebe98fb5256791b83f0e7dc8537ed0d8b2b6315bbcd2ae71164997d7b2f84eff2afbe521a9d26f0564b5cbc1668e44971492dcb1e2b8935514ab01bc
   languageName: node
   linkType: hard
 
-"@triplydb/engine@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@triplydb/engine@npm:1.2.0::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Fengine%2F-%2F%40triplydb%2Fengine-1.2.0.tgz"
+"@triplydb/engine@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "@triplydb/engine@npm:1.5.2::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Fengine%2F-%2F%40triplydb%2Fengine-1.5.2.tgz"
   dependencies:
-    "@triplydb/data-factory": ^1.2.1
+    "@triplydb/data-factory": ^1.2.7
     debug: ^4.3.4
     lodash: ^4.17.21
     rdf-data-factory: ^1.1.1
@@ -2399,7 +2433,7 @@ __metadata:
     source-map-support: ^0.5.21
     sparqljs: ^3.6.2
     uuid: ^9.0.0
-  checksum: 105220b0e36740c71d79086a7a71f503914eb5834de365b25c2cfac2fba8a760bcde07670a60b28ab5547fd621e813687e6fad68ce3fd7d4cf12147defc7d470
+  checksum: 694ce32a2183723c6816908dd109bc13a72e843081c02f880138fc020cb2f755a9d09741f3575d282a7f1141ae5d24843771d618d9bc883a8d3dc80dbface504
   languageName: node
   linkType: hard
 
@@ -2413,23 +2447,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@triplydb/ratt@npm:latest":
-  version: 5.0.0-rc.19
-  resolution: "@triplydb/ratt@npm:5.0.0-rc.19::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Fratt%2F-%2F%40triplydb%2Fratt-5.0.0-rc.19.tgz"
+"@triplydb/iri@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@triplydb/iri@npm:1.0.1::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Firi%2F-%2F%40triplydb%2Firi-1.0.1.tgz"
+  dependencies:
+    lodash: ^4.17.21
+    source-map-support: ^0.5.21
+  checksum: 7da568128c6a320e0d477fcfda9c3a07c1f724d7f03054e59c7c6bd585e98d83f39496e0b8e58c269ece39f5a65b381679c5b810180f21714245550fc0502894
+  languageName: node
+  linkType: hard
+
+"@triplydb/recognized-datatypes@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@triplydb/recognized-datatypes@npm:0.2.0::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Frecognized-datatypes%2F-%2F%40triplydb%2Frecognized-datatypes-0.2.0.tgz"
+  dependencies:
+    "@rdfjs/types": ^1.1.0
+    "@types/chai-datetime": ^0.0.37
+    chai-datetime: ^1.8.0
+    nearley: ^2.20.1
+    source-map-support: ^0.5.20
+  checksum: 564a4cf1c198a1ef2bae88ebcd5a3bb8ec1af721b257475a822e194a8afa01d2b554a5c57a1164afd57952fb903094a76ab6288af8f7b20712341bbc35efb6f2
+  languageName: node
+  linkType: hard
+
+"@triplydb/speedy-memory@npm:^1.4.0":
+  version: 1.6.2
+  resolution: "@triplydb/speedy-memory@npm:1.6.2::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Fspeedy-memory%2F-%2F%40triplydb%2Fspeedy-memory-1.6.2.tgz"
+  dependencies:
+    "@triplydb/data-factory": ^1.2.7
+    "@triplydb/engine": ^1.5.2
+    source-map-support: ^0.5.21
+  checksum: 09d0e9eb392e69fa91ac1f471b559fc19774ec33cb203ae51dd90b2e2a79e9e6245744adfadb55cc4d5ac2bf1cfbeb6d01057be63fcc30e736638a2f98d1365f
+  languageName: node
+  linkType: hard
+
+"@triplyetl/etl@npm:latest":
+  version: 1.0.1-rc.2
+  resolution: "@triplyetl/etl@npm:1.0.1-rc.2::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F463%2Fpackages%2Fnpm%2F%40triplyetl%2Fetl%2F-%2F%40triplyetl%2Fetl-1.0.1-rc.2.tgz"
   dependencies:
     "@triply/actor-init-sparql-rdfjs": ^1.1.2
     "@triply/triplydb": ^4.3.0
-    "@triply/utils": ^1.4.1
-    "@triplydb/data-factory": ^1.0.0
-    "@triplydb/speedy-memory": ^1.0.0
+    "@triply/utils": ^1.4.2
+    "@triplydb/data-factory": ^1.2.3
+    "@triplydb/iri": ^1.0.0
+    "@triplydb/speedy-memory": ^1.4.0
     "@types/diff": ^5.0.2
     "@types/json-stable-stringify": ^1.0.34
-    async-saxophone: ^1.0.1
-    axios: ^1.2.2
+    async-saxophone: ^1.0.2
+    axios: ^1.3.4
     chalk: 4.1.2
     clownface: ^1.5.1
-    commander: ^9.4.1
-    config: ^3.3.8
+    commander: ^9.5.0
+    config: ^3.3.9
     convert-hrtime: ^5.0.0
     cross-fetch: ^3.1.5
     csv-parse: 4.16.3
@@ -2439,21 +2508,22 @@ __metadata:
     diff: ^5.1.0
     dotenv: ^16.0.3
     es6-weak-map: ^2.0.3
-    fast-xml-parser: ^4.0.12
+    fast-xml-parser: ^4.1.3
     filenamify: 4.3.0
     find-up: ^5.0.0
     flatted: ^3.2.7
-    fs-extra: ^10.1.0
+    fs-extra: ^11.1.0
     get-current-line: ^6.6.0
     html-entities: ^2.3.3
-    ink: ^3.2.0
+    ink: 3.2.0
     ink-divider: ^3.0.0
     ink-progress-bar: ^3.0.0
-    ink-spinner: ^4.0.3
+    ink-spinner: 4.0.3
     ink-table: ^3.0.0
-    inquirer: ^8.0.0
+    inquirer: ^8.2.5
     json-stable-stringify: ^1.0.2
-    language-tags: ^1.0.7
+    jsonpath: ^1.1.1
+    language-tags: ^1.0.8
     lodash: ^4.17.21
     md5: ^2.3.0
     millify: ^4.0.1
@@ -2463,14 +2533,14 @@ __metadata:
     object-hash: ^3.0.0
     p-reflect: 2.1.0
     p-timeout: 4.1.0
-    postgres: ^3.3.2
-    proj4: ^2.8.0
+    postgres: ^3.3.4
+    proj4: ^2.8.1
     properties: ^1.2.1
     pumpify: ^2.0.1
     rdf-isomorphic: ^1.3.1
-    rdf-string: ^1.6.2
+    rdf-string: ^1.6.3
     rdf-validate-shacl: ^0.4.5
-    react: 18.2.0
+    react: 17.0.2
     saxophone: ^0.8.0
     shapefile: ^0.6.6
     source-map-support: ^0.5.21
@@ -2479,41 +2549,16 @@ __metadata:
     stacktracey: ^2.1.8
     table: ^6.8.1
     through2: ^4.0.2
-    ts-essentials: ^9.3.0
+    ts-essentials: ^9.3.1
     url-parse: ^1.5.10
     uuid: ^9.0.0
     wkx: ^0.5.0
     xlsx: ^0.18.5
   bin:
+    etl: lib/runner/cli.js
     prefixes: lib/bin/prefixes-from-config.js
-    ratt: lib/runner/cli.js
     tools: lib/bin/scripts/cli.js
-  checksum: ecfd2af4bee2ae569493ad1d3b4929d2ce77974a291116d563e5a70713860408f5ea2dae480826d7752386d741eff813fac5bbd4170df80139914142da63d356
-  languageName: node
-  linkType: hard
-
-"@triplydb/recognized-datatypes@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@triplydb/recognized-datatypes@npm:0.1.0::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Frecognized-datatypes%2F-%2F%40triplydb%2Frecognized-datatypes-0.1.0.tgz"
-  dependencies:
-    "@rdfjs/types": ^1.1.0
-    "@types/chai-datetime": ^0.0.37
-    chai-datetime: ^1.8.0
-    n3: ^1.16.2
-    nearley: ^2.20.1
-    source-map-support: ^0.5.20
-  checksum: d827e719265fabe7805637924d5011f073c407302bfb390d1400457c87145047cfac621b484f5a3e90d476c7feb9808d82c1980ab98497915137c4e23fb44885
-  languageName: node
-  linkType: hard
-
-"@triplydb/speedy-memory@npm:^1.0.0":
-  version: 1.3.0
-  resolution: "@triplydb/speedy-memory@npm:1.3.0::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F393%2Fpackages%2Fnpm%2F%40triplydb%2Fspeedy-memory%2F-%2F%40triplydb%2Fspeedy-memory-1.3.0.tgz"
-  dependencies:
-    "@triplydb/data-factory": ^1.2.1
-    "@triplydb/engine": ^1.2.0
-    source-map-support: ^0.5.21
-  checksum: 86e66cfdf88a940ef8e8c12b1c2dacd852678a22ebc53f8b6e04642d9aecb01f98b12734222d378aa44061b2bac643f7540d3c8bcc6a3391b3769c136ef7dc74
+  checksum: 57fc39767b434bba2a937c9a16c49cc275f5b9b24848dda4fccd302169709fe54da4ebaabd7fb2de421b79b1b23628c4d2249ad67447fa031bcc9147e9257a1e
   languageName: node
   linkType: hard
 
@@ -2583,6 +2628,13 @@ __metadata:
   version: 1.5.6
   resolution: "@types/jsonld@npm:1.5.6"
   checksum: 66cf4586b6336c3d7024bcf3d07e2d31b9eee8dd0f57af1caa991ce0c70fcdf7ea011496d2c0ccf15ce5d40f88cf3218eb5cb1c011ab512564d0b2694314d4af
+  languageName: node
+  linkType: hard
+
+"@types/jsonld@npm:^1.5.8":
+  version: 1.5.8
+  resolution: "@types/jsonld@npm:1.5.8"
+  checksum: abd710f2e243cd741d3249cbc03143f418ac6c2bd6e77adbbfb767e5fb689340da09b49da57f904422e33c302b7f06a129429e7e90660432fd0726c203f9af82
   languageName: node
   linkType: hard
 
@@ -2689,6 +2741,13 @@ __metadata:
   version: 0.5.3
   resolution: "@types/wellknown@npm:0.5.3"
   checksum: 7b39dd2702aedec74a8414828b56cfe3efd601404aaef99445d236e3e2a93c8dd1dbf1945e9111a4d51678b1613d505ae2395593ab641ae1520b0bedbb09469f
+  languageName: node
+  linkType: hard
+
+"@types/wellknown@npm:^0.5.4":
+  version: 0.5.4
+  resolution: "@types/wellknown@npm:0.5.4"
+  checksum: 117d5b9d835b2164ac3aed1764905e95319fd9cd90f79a9f19f1213edaf5ba0f3873fa1e9bb2b40e5ab8839c7b799fc919e857f05519161accb46553a019d736
   languageName: node
   linkType: hard
 
@@ -3095,10 +3154,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async-saxophone@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "async-saxophone@npm:1.0.1"
-  checksum: 6f56bfd16b8fff43bdc076b565e66ece36ae391ca95a8a18b15017b79d7ef309d92406b0fb867c6e170fc35ba55235cf2a8f41d657c49d5e6bc9a9b83bfe7667
+"async-saxophone@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "async-saxophone@npm:1.0.2"
+  checksum: 59fd65546e2179ede023b6f20eb0394c3c928042c823e09114221653ce681a57c4e86139580b932454acf119dc56476b5c587da5e9b8c729ea321373c73a6fdf
   languageName: node
   linkType: hard
 
@@ -3146,14 +3205,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.2.2":
-  version: 1.3.3
-  resolution: "axios@npm:1.3.3"
+"axios@npm:^1.3.4":
+  version: 1.3.4
+  resolution: "axios@npm:1.3.4"
   dependencies:
     follow-redirects: ^1.15.0
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
-  checksum: b734a4bc348e2fa27150a7d4289d783fa405feb3f79f8daf28fd05813a12c8525ae9d3854aafe7ba041b005a4a751a0ba3b923331ceed41296ae14c7e54e2f26
+  checksum: 7440edefcf8498bc3cdf39de00443e8101f249972c83b739c6e880d9d669fea9486372dbe8739e88b3bf8bb1ad15f6106693f206f078f4516fe8fd47b1c3093c
   languageName: node
   linkType: hard
 
@@ -3663,7 +3722,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^9.4.1":
+"commander@npm:^9.5.0":
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
   checksum: c7a3e27aa59e913b54a1bafd366b88650bc41d6651f0cbe258d4ff09d43d6a7394232a4dadd0bf518b3e696fdf595db1028a0d82c785b88bd61f8a440cecfade
@@ -3711,7 +3770,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"config@npm:^3.3.8":
+"config@npm:^3.3.9":
   version: 3.3.9
   resolution: "config@npm:3.3.9"
   dependencies:
@@ -3905,6 +3964,13 @@ __metadata:
   version: 0.1.3
   resolution: "deep-is@npm:0.1.3"
   checksum: c15b04c3848a89880c94e25b077c19b47d9a30dd99048e70e5f95d943e7b246bee1da0c1376b56b01bc045be2cae7d9b1c856e68e47e9805634327de7c6cb6d5
+  languageName: node
+  linkType: hard
+
+"deep-is@npm:~0.1.3":
+  version: 0.1.4
+  resolution: "deep-is@npm:0.1.4"
+  checksum: edb65dd0d7d1b9c40b2f50219aef30e116cedd6fc79290e740972c132c09106d2e80aa0bc8826673dd5a00222d4179c84b36a790eef63a4c4bca75a37ef90804
   languageName: node
   linkType: hard
 
@@ -4224,6 +4290,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"escodegen@npm:^1.8.1":
+  version: 1.14.3
+  resolution: "escodegen@npm:1.14.3"
+  dependencies:
+    esprima: ^4.0.1
+    estraverse: ^4.2.0
+    esutils: ^2.0.2
+    optionator: ^0.8.1
+    source-map: ~0.6.1
+  dependenciesMeta:
+    source-map:
+      optional: true
+  bin:
+    escodegen: bin/escodegen.js
+    esgenerate: bin/esgenerate.js
+  checksum: 381cdc4767ecdb221206bbbab021b467bbc2a6f5c9a99c9e6353040080bdd3dfe73d7604ad89a47aca6ea7d58bc635f6bd3fbc8da9a1998e9ddfa8372362ccd0
+  languageName: node
+  linkType: hard
+
 "eslint-config-prettier@npm:^8.5.0":
   version: 8.5.0
   resolution: "eslint-config-prettier@npm:8.5.0"
@@ -4364,6 +4449,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esprima@npm:1.2.2":
+  version: 1.2.2
+  resolution: "esprima@npm:1.2.2"
+  bin:
+    esparse: ./bin/esparse.js
+    esvalidate: ./bin/esvalidate.js
+  checksum: 4f10006f0e315f2f7d8cf6630e465f183512f1ab2e862b11785a133ce37ed1696573deefb5256e510eaa4368342b13b393334477f6ccdcdb8f10e782b0f5e6dc
+  languageName: node
+  linkType: hard
+
+"esprima@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "esprima@npm:4.0.1"
+  bin:
+    esparse: ./bin/esparse.js
+    esvalidate: ./bin/esvalidate.js
+  checksum: b45bc805a613dbea2835278c306b91aff6173c8d034223fa81498c77dcbce3b2931bf6006db816f62eacd9fd4ea975dfd85a5b7f3c6402cfd050d4ca3c13a628
+  languageName: node
+  linkType: hard
+
 "esquery@npm:^1.4.0":
   version: 1.4.0
   resolution: "esquery@npm:1.4.0"
@@ -4382,7 +4487,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"estraverse@npm:^4.1.1":
+"estraverse@npm:^4.1.1, estraverse@npm:^4.2.0":
   version: 4.3.0
   resolution: "estraverse@npm:4.3.0"
   checksum: a6299491f9940bb246124a8d44b7b7a413a8336f5436f9837aaa9330209bd9ee8af7e91a654a3545aee9c54b3308e78ee360cef1d777d37cfef77d2fa33b5827
@@ -4491,21 +4596,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-levenshtein@npm:^2.0.6":
+"fast-levenshtein@npm:^2.0.6, fast-levenshtein@npm:~2.0.6":
   version: 2.0.6
   resolution: "fast-levenshtein@npm:2.0.6"
   checksum: 92cfec0a8dfafd9c7a15fba8f2cc29cd0b62b85f056d99ce448bbcd9f708e18ab2764bda4dd5158364f4145a7c72788538994f0d1787b956ef0d1062b0f7c24c
   languageName: node
   linkType: hard
 
-"fast-xml-parser@npm:^4.0.12":
-  version: 4.1.2
-  resolution: "fast-xml-parser@npm:4.1.2"
+"fast-xml-parser@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "fast-xml-parser@npm:4.1.3"
   dependencies:
     strnum: ^1.0.5
   bin:
     fxparser: src/cli/cli.js
-  checksum: 6a7d1b17057f8470e70603eddfa75f990625735d068d57ece861d0154ad8d27fda63c2831d07e1ecd7e68e993738b2448925cb9277d8c0ed68009623bbcd63c6
+  checksum: 6123d374ee10a92850422acfc49ff1cb7c993ede160a4b753498ccdd22c6f4876ef52065a256bd03991432ca43b3bd9ddc06d825b1d77850e4fa26652fb9d26c
   languageName: node
   linkType: hard
 
@@ -4715,6 +4820,17 @@ __metadata:
     jsonfile: ^6.0.1
     universalify: ^2.0.0
   checksum: dc94ab37096f813cc3ca12f0f1b5ad6744dfed9ed21e953d72530d103cea193c2f81584a39e9dee1bea36de5ee66805678c0dddc048e8af1427ac19c00fffc50
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^11.1.0":
+  version: 11.1.1
+  resolution: "fs-extra@npm:11.1.1"
+  dependencies:
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: fb883c68245b2d777fbc1f2082c9efb084eaa2bbf9fddaa366130d196c03608eebef7fb490541276429ee1ca99f317e2d73e96f5ca0999eefedf5a624ae1edfd
   languageName: node
   linkType: hard
 
@@ -5281,7 +5397,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ink-spinner@npm:^4.0.3":
+"ink-spinner@npm:4.0.3":
   version: 4.0.3
   resolution: "ink-spinner@npm:4.0.3"
   dependencies:
@@ -5305,7 +5421,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ink@npm:^3.2.0":
+"ink@npm:3.2.0":
   version: 3.2.0
   resolution: "ink@npm:3.2.0"
   dependencies:
@@ -5342,7 +5458,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inquirer@npm:^8.0.0":
+"inquirer@npm:^8.2.5":
   version: 8.2.5
   resolution: "inquirer@npm:8.2.5"
   dependencies:
@@ -5666,10 +5782,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonld@npm:^8.1.0":
+  version: 8.1.1
+  resolution: "jsonld@npm:8.1.1"
+  dependencies:
+    "@digitalbazaar/http-client": ^3.2.0
+    canonicalize: ^1.0.1
+    lru-cache: ^6.0.0
+    rdf-canonize: ^3.0.0
+  checksum: 72183be7bd952425e7fde9c70f1a80394f3b104f27902ff75e6541ab62e2f2c7e1f4e13300474689bb0331836eec943c79aaa803c9e91238112963e09dbec98d
+  languageName: node
+  linkType: hard
+
 "jsonparse@npm:^1.2.0, jsonparse@npm:^1.3.1":
   version: 1.3.1
   resolution: "jsonparse@npm:1.3.1"
   checksum: 6514a7be4674ebf407afca0eda3ba284b69b07f9958a8d3113ef1005f7ec610860c312be067e450c569aab8b89635e332cee3696789c750692bb60daba627f4d
+  languageName: node
+  linkType: hard
+
+"jsonpath@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "jsonpath@npm:1.1.1"
+  dependencies:
+    esprima: 1.2.2
+    static-eval: 2.0.2
+    underscore: 1.12.1
+  checksum: 5480d8e9e424fe2ed4ade6860b6e2cefddb21adb3a99abe0254cd9428e8ef9b0c9fb5729d6a5a514e90df50d645ccea9f3be48d627570e6222dd5dadc28eba7b
   languageName: node
   linkType: hard
 
@@ -5717,7 +5856,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"language-tags@npm:^1.0.7":
+"language-tags@npm:^1.0.8":
   version: 1.0.8
   resolution: "language-tags@npm:1.0.8"
   dependencies:
@@ -5733,6 +5872,16 @@ __metadata:
     prelude-ls: ^1.2.1
     type-check: ~0.4.0
   checksum: 12c5021c859bd0f5248561bf139121f0358285ec545ebf48bb3d346820d5c61a4309535c7f387ed7d84361cf821e124ce346c6b7cef8ee09a67c1473b46d0fc4
+  languageName: node
+  linkType: hard
+
+"levn@npm:~0.3.0":
+  version: 0.3.0
+  resolution: "levn@npm:0.3.0"
+  dependencies:
+    prelude-ls: ~1.1.2
+    type-check: ~0.3.2
+  checksum: 0d084a524231a8246bb10fec48cdbb35282099f6954838604f3c7fc66f2e16fa66fd9cc2f3f20a541a113c4dafdf181e822c887c8a319c9195444e6c64ac395e
   languageName: node
   linkType: hard
 
@@ -6014,7 +6163,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mcal@workspace:."
   dependencies:
-    "@triplydb/ratt": latest
+    "@triplyetl/etl": latest
     "@types/chai": ^4.2.21
     "@types/fs-extra": ^9.0.12
     "@types/lodash": ^4.14.173
@@ -6387,6 +6536,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"n3@npm:^1.16.3":
+  version: 1.16.4
+  resolution: "n3@npm:1.16.4"
+  dependencies:
+    queue-microtask: ^1.1.2
+    readable-stream: ^4.0.0
+  checksum: 657c3160e7f14e5b576a93890c6433a2a3d828a106eb709061b2e8b1e11cad8c01fcbfcd2ec7ae76addd55753fb777d7e7e16e93a04435978ef5f2c4571f9a41
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:3.3.3":
   version: 3.3.3
   resolution: "nanoid@npm:3.3.3"
@@ -6621,6 +6780,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"optionator@npm:^0.8.1":
+  version: 0.8.3
+  resolution: "optionator@npm:0.8.3"
+  dependencies:
+    deep-is: ~0.1.3
+    fast-levenshtein: ~2.0.6
+    levn: ~0.3.0
+    prelude-ls: ~1.1.2
+    type-check: ~0.3.2
+    word-wrap: ~1.2.3
+  checksum: b8695ddf3d593203e25ab0900e265d860038486c943ff8b774f596a310f8ceebdb30c6832407a8198ba3ec9debe1abe1f51d4aad94843612db3b76d690c61d34
+  languageName: node
+  linkType: hard
+
 "optionator@npm:^0.9.1":
   version: 0.9.1
   resolution: "optionator@npm:0.9.1"
@@ -6809,10 +6982,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postgres@npm:^3.3.2":
-  version: 3.3.3
-  resolution: "postgres@npm:3.3.3"
-  checksum: 9b4b5426fdb56abaf0b713e6c2762be06bac4aec4c618d50a8e63201d93b9b863f687b7141f6e6fa4b7a7cb4fae6b748f01a5b99ea574b33ae5603bf862d9d70
+"postgres@npm:^3.3.4":
+  version: 3.3.4
+  resolution: "postgres@npm:3.3.4"
+  checksum: aafbf70d4a5fbaaf8c6804fc19d012845e7b832798c7dfcb2d472d672e99a4ae84b4103500cc1f3c178edec9cf9dae1a9d9a14eb6a6bc487c94b4d737c75289a
   languageName: node
   linkType: hard
 
@@ -6820,6 +6993,13 @@ __metadata:
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
   checksum: cd192ec0d0a8e4c6da3bb80e4f62afe336df3f76271ac6deb0e6a36187133b6073a19e9727a1ff108cd8b9982e4768850d413baa71214dd80c7979617dca827a
+  languageName: node
+  linkType: hard
+
+"prelude-ls@npm:~1.1.2":
+  version: 1.1.2
+  resolution: "prelude-ls@npm:1.1.2"
+  checksum: c4867c87488e4a0c233e158e4d0d5565b609b105d75e4c05dc760840475f06b731332eb93cc8c9cecb840aa8ec323ca3c9a56ad7820ad2e63f0261dadcb154e4
   languageName: node
   linkType: hard
 
@@ -6853,13 +7033,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proj4@npm:^2.8.0":
-  version: 2.8.1
-  resolution: "proj4@npm:2.8.1"
+"proj4@npm:^2.8.1":
+  version: 2.9.0
+  resolution: "proj4@npm:2.9.0"
   dependencies:
     mgrs: 1.0.0
     wkt-parser: ^1.3.1
-  checksum: 247abcb9e74195822a0e3b05e225e127071cec81783a478b27c3bed239b91a5702a3506253906693ee59923b1cbcb63406f49894281f0aedb07cf785685f040c
+  checksum: b907be4821ddfabf779e57cd008ec062aa2ed033525c867c820b98492291871ef8a7a45cd2ee939f3bcb53cb89142b18a50af55d4e2748af272e62a194e49aa7
   languageName: node
   linkType: hard
 
@@ -7161,6 +7341,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rdf-string@npm:^1.6.3":
+  version: 1.6.3
+  resolution: "rdf-string@npm:1.6.3"
+  dependencies:
+    "@rdfjs/types": "*"
+    rdf-data-factory: ^1.1.0
+  checksum: 7ee450720a8531ce02ad43f48102ad5856113b5d034137d3f9b7a5b05246e5203901633f0808327586693b99e984485f54f361174baddfe460bea68ecd022448
+  languageName: node
+  linkType: hard
+
 "rdf-terms@npm:^1.6.2, rdf-terms@npm:^1.7.0":
   version: 1.9.0
   resolution: "rdf-terms@npm:1.9.0"
@@ -7251,12 +7441,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.2.0":
-  version: 18.2.0
-  resolution: "react@npm:18.2.0"
+"react@npm:17.0.2":
+  version: 17.0.2
+  resolution: "react@npm:17.0.2"
   dependencies:
     loose-envify: ^1.1.0
-  checksum: 88e38092da8839b830cda6feef2e8505dec8ace60579e46aa5490fc3dc9bba0bd50336507dc166f43e3afc1c42939c09fe33b25fae889d6f402721dcd78fca1b
+    object-assign: ^4.1.1
+  checksum: b254cc17ce3011788330f7bbf383ab653c6848902d7936a87b09d835d091e3f295f7e9dd1597c6daac5dc80f90e778c8230218ba8ad599f74adcc11e33b9d61b
   languageName: node
   linkType: hard
 
@@ -7728,7 +7919,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map@npm:^0.6.0, source-map@npm:^0.6.1":
+"source-map@npm:^0.6.0, source-map@npm:^0.6.1, source-map@npm:~0.6.1":
   version: 0.6.1
   resolution: "source-map@npm:0.6.1"
   checksum: 59ce8640cf3f3124f64ac289012c2b8bd377c238e316fb323ea22fbfe83da07d81e000071d7242cad7a23cd91c7de98e4df8830ec3f133cb6133a5f6e9f67bc2
@@ -7793,7 +7984,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sparqljs@npm:^3.6.2":
+"sparqljs@npm:3.6.2, sparqljs@npm:^3.6.2":
   version: 3.6.2
   resolution: "sparqljs@npm:3.6.2"
   dependencies:
@@ -7902,6 +8093,15 @@ __metadata:
     as-table: ^1.0.36
     get-source: ^2.0.12
   checksum: abd8316b4e120884108f5a47b2f61abdcaeaa118afd95f3c48317cb057fff43d697450ba00de3f9fe7fee61ee72644ccda4db990a8e4553706644f7c17522eab
+  languageName: node
+  linkType: hard
+
+"static-eval@npm:2.0.2":
+  version: 2.0.2
+  resolution: "static-eval@npm:2.0.2"
+  dependencies:
+    escodegen: ^1.8.1
+  checksum: 335a923c5ccb29add404ac23d0a55c0da6cee3071f6f67a7053aeac0dedc6dbfc53ac9269e9c25f403f5b7603a291ef47d7114f99bde241184f7aa3f9286dc32
   languageName: node
   linkType: hard
 
@@ -8220,6 +8420,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-essentials@npm:^9.3.1":
+  version: 9.3.1
+  resolution: "ts-essentials@npm:9.3.1"
+  peerDependencies:
+    typescript: ">=4.1.0"
+  checksum: 5accaec3eeea93cf19ad9e1959e763ba8a8253c977cd3f88cd7d8a2c04e697e77cc65fd742d9e88482b564a78b3c2dc1269119505bf7ad06320175b490dd49de
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.6.0, tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
@@ -8258,6 +8467,15 @@ __metadata:
   dependencies:
     prelude-ls: ^1.2.1
   checksum: ec688ebfc9c45d0c30412e41ca9c0cdbd704580eb3a9ccf07b9b576094d7b86a012baebc95681999dd38f4f444afd28504cb3a89f2ef16b31d4ab61a0739025a
+  languageName: node
+  linkType: hard
+
+"type-check@npm:~0.3.2":
+  version: 0.3.2
+  resolution: "type-check@npm:0.3.2"
+  dependencies:
+    prelude-ls: ~1.1.2
+  checksum: dd3b1495642731bc0e1fc40abe5e977e0263005551ac83342ecb6f4f89551d106b368ec32ad3fb2da19b3bd7b2d1f64330da2ea9176d8ddbfe389fb286eb5124
   languageName: node
   linkType: hard
 
@@ -8361,6 +8579,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 2eee5c37cad4390385db5db5a8e81470e42e8f1401b0358d7390095d6f681b410f2c4a0c496c6ff9ebd775423c7785cdace7bcdad76c7bee283df3d9718c0f20
+  languageName: node
+  linkType: hard
+
+"underscore@npm:1.12.1":
+  version: 1.12.1
+  resolution: "underscore@npm:1.12.1"
+  checksum: ec327603aa112b99fe9d74cd9bf3b3b7451465a9d2610ceab269a532e3f191650ab017903be34dc86fe406a11d04d8905a3b04dd4c129493e51bee09a3f3074c
   languageName: node
   linkType: hard
 
@@ -8601,7 +8826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"word-wrap@npm:^1.2.3":
+"word-wrap@npm:^1.2.3, word-wrap@npm:~1.2.3":
   version: 1.2.3
   resolution: "word-wrap@npm:1.2.3"
   checksum: 30b48f91fcf12106ed3186ae4fa86a6a1842416df425be7b60485de14bec665a54a68e4b5156647dec3a70f25e84d270ca8bc8cd23182ed095f5c7206a938c1f
@@ -8715,6 +8940,13 @@ __metadata:
   version: 2.1.1
   resolution: "yaml@npm:2.1.1"
   checksum: f48bb209918aa57cfaf78ef6448d1a1f8187f45c746f933268b7023dc59e5456004611879126c9bb5ea55b0a2b1c2b392dfde436931ece0c703a3d754562bb96
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "yaml@npm:2.2.1"
+  checksum: 84f68cbe462d5da4e7ded4a8bded949ffa912bc264472e5a684c3d45b22d8f73a3019963a32164023bdf3d83cfb6f5b58ff7b2b10ef5b717c630f40bd6369a23
   languageName: node
   linkType: hard
 
