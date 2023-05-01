@@ -1,7 +1,7 @@
 {
   "author": "Triply <info@triply.cc>",
   "dependencies": {
-    "@triplydb/ratt": "latest",
+    "@triplyetl/etl": "latest",
     "chai": "^4.3.6",
     "eslint-plugin-lodash": "^7.3.0",
     "fs-extra": "^10.0.0",
@@ -11,6 +11,7 @@
     "source-map-support": "^0.5.20",
     "ts-essentials": "^9.1.2"
   },
+  "type": "module",
   "description": "ETL for mcal",
   "devDependencies": {
     "@types/chai": "^4.2.21",

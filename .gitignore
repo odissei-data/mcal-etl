@@ -1,15 +1,10 @@
 *.log
-ratt.err
-ratt.trace*
 data
 lib
 node_modules
 npm-debug.log*
 package-lock.json
 report.ttl.gz
-
-# Do not accidentally commit `.ratt-private` which may contain private a private API Token.
-.ratt*
 
 # Based on https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 .pnp.*
@@ -19,3 +14,10 @@ report.ttl.gz
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# local environment varibales
+.env
+
+# etl error logs
+etl.err
+etl.traceError*
