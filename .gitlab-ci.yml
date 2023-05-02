@@ -28,7 +28,7 @@ test:
     - yarn run util:validateTs
     - yarn run util:lint
   rules:
-    - if: $TASK == null
+    - if: $ENV == null
 
 .etl-template:
   stage: run-etls
