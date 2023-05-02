@@ -8,6 +8,7 @@ default:
 
 stages:
   - install
+  - test
   - run-etls
   - create-knowledge-graph
   - informationproducts
@@ -19,6 +20,16 @@ install:
   cache: !reference [.readWriteYarnCache]
   script: !reference [.installYarnDeps]
 
+test:
+  stage: test
+  cache: !reference [.readOnlyYarnCache]
+  script:
+    - yarn install
+    - yarn run util:validateTs
+    - yarn run util:lint
+  rules:
+    - if: $TASK == null
+
 .etl-template:
   stage: run-etls
   script:
@@ -29,7 +40,7 @@ install:
   rules:
     - if: $TASK == "run-etls"
     - if: $TASK == $CI_JOB_NAME
-    - if: $TASK == null
+    - if: $CI_PIPELINE_SOURCE == "schedule"
   artifacts:
     name: "$CI_JOB_NAME-etl-logs"
     when: always
