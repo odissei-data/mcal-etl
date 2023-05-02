@@ -27,7 +27,6 @@ install:
     - yarn run util:lint
     - yarn etl --verbose --head $HEAD ./lib/$CI_JOB_NAME.js --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
   rules:
-    - if: $TASK == "run-etls"
     - if: $TASK == $CI_JOB_NAME
   artifacts:
     name: "$CI_JOB_NAME-etl-logs"
