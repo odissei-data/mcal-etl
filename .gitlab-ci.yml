@@ -99,7 +99,7 @@ create-knowledge-graph:
   script:
     - yarn install
     - yarn build
-    - yarn etl --verbose ./lib/create-knowledge-graph.js --timeout "$TIMEOUT" --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
+    - yarn etl --verbose ./lib/$CI_JOB_NAME.js --timeout "$TIMEOUT" --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
   rules:
     # Make sure you remove this next line if you want to use this stage:
     - when: never
