@@ -2516,9 +2516,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@triplyetl/etl@npm:^2.0.0-rc.3":
-  version: 2.0.0-rc.3
-  resolution: "@triplyetl/etl@npm:2.0.0-rc.3::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F463%2Fpackages%2Fnpm%2F%40triplyetl%2Fetl%2F-%2F%40triplyetl%2Fetl-2.0.0-rc.3.tgz"
+"@triplyetl/etl@npm:latest":
+  version: 2.0.1
+  resolution: "@triplyetl/etl@npm:2.0.1::__archiveUrl=https%3A%2F%2Fgit.triply.cc%2Fapi%2Fv4%2Fprojects%2F463%2Fpackages%2Fnpm%2F%40triplyetl%2Fetl%2F-%2F%40triplyetl%2Fetl-2.0.1.tgz"
   dependencies:
     "@triply/actor-init-sparql-rdfjs": ^1.1.2
     "@triply/triplydb": ^5.0.1
@@ -2568,7 +2568,9 @@ __metadata:
     object-hash: ^3.0.0
     p-reflect: 2.1.0
     p-timeout: 4.1.0
+    parse-duration: ^1.0.3
     postgres: ^3.3.4
+    pretty-ms: ^8.0.0
     proj4: ^2.8.1
     properties: ^1.2.1
     pumpify: ^2.0.1
@@ -2594,7 +2596,7 @@ __metadata:
     etl: lib/runner/cli.js
     prefixes: lib/bin/prefixes-from-config.js
     tools: lib/bin/scripts/cli.js
-  checksum: bd2879b46a87e47a0eade199236c3c0ebaee0dbc3a574faa65584ed689d96fd26cbb17158ab65a300a4d51553f7486401ecc1b0015e0d69a2171ba312d977a95
+  checksum: e9cf03cab9fc30b7727fdb38e3e17f991d0ebf9fc4ba8271a2453da7e0b3a9299547d575ee10b76f676af4441e44c05be9cafb5840e1ac98967aa4d4c25aa49c
   languageName: node
   linkType: hard
 
@@ -6104,7 +6106,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mcal@workspace:."
   dependencies:
-    "@triplyetl/etl": ^2.0.0-rc.3
+    "@triplyetl/etl": latest
     "@types/chai": ^4.2.21
     "@types/fs-extra": ^9.0.12
     "@types/lodash": ^4.14.173
@@ -6820,6 +6822,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"parse-duration@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "parse-duration@npm:1.0.3"
+  checksum: 3302572593be6725de06aadb9e8c99ff25cff063b8cf536f54e0fc39e5533c8c5e0979f420618ff2923041076bdc1980f7cc3a642852b008d5ee96234c8c2bd2
+  languageName: node
+  linkType: hard
+
 "parse-link-header@npm:^1.0.1":
   version: 1.0.1
   resolution: "parse-link-header@npm:1.0.1"
@@ -6835,6 +6844,13 @@ __metadata:
   dependencies:
     xtend: ~4.0.1
   checksum: 0e96c6af9910e8f92084b49b8dc6a10dd58db470847d1499f562576180c1ac5e49d18007697f0d538e5f3efdc8ce1d8777641f3ae225302b74af0dd0578b628e
+  languageName: node
+  linkType: hard
+
+"parse-ms@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "parse-ms@npm:3.0.0"
+  checksum: fc602bba093835562321a67a9d6c8c9687ca4f26a09459a77e07ebd7efddd1a5766725ec60eb0c83a2abe67f7a23808f7deb1c1226727776eaf7f9607ae09db2
   languageName: node
   linkType: hard
 
@@ -6940,6 +6956,15 @@ __metadata:
   bin:
     prettier: bin-prettier.js
   checksum: b49e409431bf129dd89238d64299ba80717b57ff5a6d1c1a8b1a28b590d998a34e083fa13573bc732bb8d2305becb4c9a4407f8486c81fa7d55100eb08263cf8
+  languageName: node
+  linkType: hard
+
+"pretty-ms@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "pretty-ms@npm:8.0.0"
+  dependencies:
+    parse-ms: ^3.0.0
+  checksum: b7d2a8182887af0e5ab93f9df331f10db9b8eda86855e2de115eb01a6c501bde5631a8813b1b0abdd7d045e79b08ae875369a8fd279a3dacd6d9e572bdd3bfa6
   languageName: node
   linkType: hard
 
