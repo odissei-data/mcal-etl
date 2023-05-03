@@ -7,53 +7,135 @@ default:
     - etl
 
 stages:
+  # 1: Install NPM dependencies and create cache:
   - install
-  - test
+  # 2: Run all regular ETL's:
   - run-etls
+  # 3: construct Knowledge graph and synchronise services for the KG:
   - create-knowledge-graph
+  # 4: Run IP bases code (e.g. create a Search Graph):
   - informationproducts
+  # 5: optional final stage (e.g. to synchronize services for SG)
+  - finalize
 
-image: node:16.17.0-bullseye-slim
+image: node:18-bullseye-slim
 
 install:
   stage: install
   cache: !reference [.readWriteYarnCache]
-  script: !reference [.installYarnDeps]
-
-test:
-  stage: test
-  cache: !reference [.readOnlyYarnCache]
-  script:
+  script: 
+    - !reference [.installYarnDeps]
     - yarn install
     - yarn run util:validateTs
     - yarn run util:lint
-  rules:
-    - if: $ENV == null
+
+#################
+##  Templates: ##
+#################
+.generic-template:
+  artifacts:
+    name: "$CI_JOB_NAME-logs"
+    when: always
+    paths:
+      - logs
 
 .etl-template:
   stage: run-etls
   script:
     - yarn install
     - yarn build
-    - yarn run util:lint
     - yarn etl --verbose --head $HEAD --timeout "$TIMEOUT" ./lib/$CI_JOB_NAME.js --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
   rules:
     - if: $TASK == "run-etls"
     - if: $TASK == $CI_JOB_NAME
     - if: $CI_PIPELINE_SOURCE == "schedule"
-  artifacts:
-    name: "$CI_JOB_NAME-etl-logs"
-    when: always
-    paths:
-      - logs
 
+.informationproducts-template:
+  stage: informationproducts
+  script:
+    - yarn install
+    - yarn build
+  rules:
+    - if: $TASK == "informationproducts"
+    - if: $TASK == $CI_JOB_NAME
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+#####################
+##  END Templates: ##
+#####################
+
+
+### Stage 2: run ETL "main"
 main:
   stage: run-etls
   interruptible: true
   cache: !reference [.readOnlyYarnCache]
   artifacts:
-    !reference [.etl-template, artifacts]
+    !reference [.generic-template, artifacts]
   script:
     - !reference [.etl-template, script]
   rules:
     - !reference [.etl-template, rules]
+
+### Example stage 2: add another ETL with name "collections"
+collections:
+  stage: run-etls
+  interruptible: true
+  cache: !reference [.readOnlyYarnCache]
+  artifacts:
+    !reference [.generic-template, artifacts]
+  script:
+    - !reference [.etl-template, script]
+  rules:
+    # Make sure you remove this next line if you want to use this stage:
+    - when: never
+    - !reference [.etl-template, rules]
+
+
+### Example stage 3: create Knowledge Graph:
+create-knowledge-graph:
+  stage: create-knowledge-graph
+  interruptible: true
+  cache: !reference [.readOnlyYarnCache]
+  script:
+    - yarn install
+    - yarn build
+    - yarn etl --verbose ./lib/create-knowledge-graph.js --timeout "$TIMEOUT" --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
+  rules:
+    # Make sure you remove this next line if you want to use this stage:
+    - when: never
+    - if: $TASK == $CI_JOB_NAME
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+
+### Example stage 4: informationproduct Search Graph:
+create-search-graph:
+  stage: !reference [.informationproducts-template, stage]
+  interruptible: true
+  cache: !reference [.readOnlyYarnCache]
+  artifacts:
+    !reference [.generic-template, artifacts]
+  rules:
+    # Make sure you remove this next line if you want to use this stage:
+    - when: never
+    - if: $TASK == "informationproducts"
+    - if: $TASK == $CI_JOB_NAME
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  script:
+    - !reference [.informationproducts-template, script]
+    - yarn etl --verbose ./lib/$CI_JOB_NAME.js --timeout "$TIMEOUT" --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
+
+### Example stage 5: synchronise servcices for Search Graph:
+synchronise-services-search-graph:
+  stage: finalize
+  interruptible: true
+  cache: !reference [.readOnlyYarnCache]
+  artifacts:
+    !reference [.generic-template, artifacts]
+  rules:
+    # Make sure you remove this next line if you want to use this stage:
+    - when: never
+    - if: $TASK == "finalize"
+    - if: $TASK == $CI_JOB_NAME
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  script:
+    - !reference [.informationproducts-template, script]
+    - yarn etl --verbose ./lib/$CI_JOB_NAME.js --timeout "$TIMEOUT" --log-dir logs --data-dir /data/$CI_PROJECT_PATH_SLUG/$CI_JOB_NAME/$CI_COMMIT_REF_NAME
