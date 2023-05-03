@@ -1,34 +1,3 @@
-include:
-  - project: 'shared/ci-utils'
-    file: '.yarn.yml'
-
-default: 
-  tags: 
-    - etl
-
-stages:
-  # 1: Install NPM dependencies and create cache:
-  - install
-  # 2: Run all regular ETL's:
-  - run-etls
-  # 3: construct Knowledge graph and synchronise services for the KG:
-  - create-knowledge-graph
-  # 4: Run IP bases code (e.g. create a Search Graph):
-  - informationproducts
-  # 5: optional final stage (e.g. to synchronize services for SG)
-  - finalize
-
-image: node:18-bullseye-slim
-
-install:
-  stage: install
-  cache: !reference [.readWriteYarnCache]
-  script: 
-    - !reference [.installYarnDeps]
-    - yarn install
-    - yarn run util:validateTs
-    - yarn run util:lint
-
 #################
 ##  Templates: ##
 #################
@@ -62,6 +31,38 @@ install:
 #####################
 ##  END Templates: ##
 #####################
+
+include:
+  - project: 'shared/ci-utils'
+    file: '.yarn.yml'
+
+default: 
+  tags: 
+    - etl
+
+stages:
+  # 1: Install NPM dependencies and create cache:
+  - install
+  # 2: Run all regular ETL's:
+  - run-etls
+  # 3: construct Knowledge graph and synchronise services for the KG:
+  - create-knowledge-graph
+  # 4: Run IP bases code (e.g. create a Search Graph):
+  - informationproducts
+  # 5: optional final stage (e.g. to synchronize services for SG)
+  - finalize
+
+image: node:18-bullseye-slim
+
+### Stage 1: install NPM dependencies, create cache, validate TS and linting
+install:
+  stage: install
+  cache: !reference [.readWriteYarnCache]
+  script: 
+    - !reference [.installYarnDeps]
+    - yarn install
+    - yarn run util:validateTs
+    - yarn run util:lint
 
 
 ### Stage 2: run ETL "main"
