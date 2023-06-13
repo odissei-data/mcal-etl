@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "lib": ["es6"],
-    "module": "commonjs",
+    "module": "NodeNext",
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
@@ -16,5 +16,5 @@
   },
   "compileOnSave": true,
   //Include the eslintrc file, as eslint uses the typescript parser, and it'll fail when it tries to lint itself
-  "include": ["src/**/*.ts", ".eslintrc.js"]
+  "include": ["src/**/*.ts", ".eslintrc.cjs"]
 }
