@@ -11,11 +11,9 @@ module.exports = {
     project: expensive ? "./tsconfig-build.json" : undefined,
     tsconfigRootDir: expensive ? '.' : undefined,
   },
-  plugins: ["@typescript-eslint", "jest", "lodash"],
+  plugins: ["@typescript-eslint"],
   rules: {
-    ...(expensive ? { "@typescript-eslint/no-floating-promises": errLevel } : {}),
-    "jest/no-focused-tests": errLevel,
-    "lodash/import-scope": [errLevel, "member"],
+    ...(expensive ? { "@typescript-eslint/no-floating-promises": errLevel } : {})
   },
   ignorePatterns: ["lib", "*.min.js"],
 };
