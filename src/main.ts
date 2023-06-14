@@ -7,6 +7,8 @@ import { validate } from '@triplyetl/etl/shacl'
 // Declare prefixes.
 const prefix_base = declarePrefix('https://mcal.odissei.nl/')
 const prefix = {
+  journal: declarePrefix(prefix_base('id/j/')),
+  article: declarePrefix(prefix_base('id/a/')),
   data: declarePrefix(prefix_base('data/')),
   graph: declarePrefix(prefix_base('graph/')),
   schema: declarePrefix(prefix_base('schema/'))
@@ -47,19 +49,22 @@ export default async function (): Promise<Etl> {
         { name: '20230613_MCAL_Inventory_ContentAnalysis.xlsx' })
     ),
     addIri({
-      prefix: prefix.data,
+      prefix: prefix.journal,
       content: 'journalID',
       key: '_journal'
     }),
-    pairs(iri(prefix.data, 'articleID'),
+    pairs(iri(prefix.article, 'articleID'),
       [a, bibo.AcademicArticle],
       [dct.title, 'title'],
-      [dct.isPartOf, '_journal']
+      [dct.isPartOf, '_journal'],
+      [dct.date, 'publicationDate']
+
     ),
     pairs('_journal',
       [a, bibo.Journal],
       [dct.title, 'journal']
     ),
+    logRecord(),
     validate(Source.file('static/model.trig')),
     toTriplyDb(destination)
   )
