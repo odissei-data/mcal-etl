@@ -1,5 +1,5 @@
-import { Etl, Source, declarePrefix, environments, fromXlsx, toTriplyDb } from '@triplyetl/etl/generic'
-import { addIri, iri, pairs } from '@triplyetl/etl/ratt'
+import { Etl, Source, declarePrefix, environments, fromXlsx, toTriplyDb, when } from '@triplyetl/etl/generic'
+import { addIri, iri, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
@@ -53,12 +53,25 @@ export default async function (): Promise<Etl> {
       content: 'journalID',
       key: '_journal'
     }),
-    pairs(iri(prefix.article, 'articleID'),
+    addIri({
+      prefix: prefix.article,
+      content: 'articleID',
+      key: '_article'
+    }),
+    when(
+      context => context.isNotEmpty('orcid'),
+      split({
+        content: 'orcid',
+        separator: ',',
+        key: "_orcids"
+      }),
+      triple('_article', dct.creator, '_orcids')
+    ),
+    pairs('_article',
       [a, bibo.AcademicArticle],
       [dct.title, 'title'],
       [dct.isPartOf, '_journal'],
       [dct.date, 'publicationDate']
-
     ),
     pairs('_journal',
       [a, bibo.Journal],
