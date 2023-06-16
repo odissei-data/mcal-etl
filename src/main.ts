@@ -1,5 +1,5 @@
 import { Etl, Source, declarePrefix, environments, fromCsv, fromXlsx, toTriplyDb, when } from '@triplyetl/etl/generic'
-import { addIri, iris, pairs, split, triple } from '@triplyetl/etl/ratt'
+import { addIri, iri, iris, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
@@ -23,7 +23,8 @@ const schema = {
    *
    * Description: Type of material
    */
-  material: prefix.schema('material')
+  material: prefix.schema('material'),
+  relevantForMCAL: prefix.schema('relevantForMcal')
 }
 
 const graph = {
@@ -46,19 +47,18 @@ export default async function (): Promise<Etl> {
   const etl = new Etl({ defaultGraph: graph.instances })
   etl.use(
     fromCsv(Source.TriplyDb.asset('odissei', 'mcal', {name: 'Mcalentory.csv'})),
-    //fromXlsx(Source.TriplyDb.asset('odissei', 'mcal', { name: '20230613_MCAL_Inventory_ContentAnalysis.xlsx' })),  
-    addIri({
-      prefix: prefix.journal,
-      content: 'journalID',
-      key: '_journal'
-    }),
-    addIri({
+    addIri({ // Generate IRI for article, maybe use DOI if available?
       prefix: prefix.article,
       content: 'articleID',
       key: '_article'
     }),
+    addIri({ // Generate IRI for journal, is there a persistant ID for journals?
+      prefix: prefix.journal,
+      content: 'journalID',
+      key: '_journal'
+    }),
     when(
-      context => context.isNotEmpty('orcid'),
+      context => context.getString('orcid') != 'NA',
       split({
         content: 'orcid',
         separator: ',',
@@ -71,7 +71,9 @@ export default async function (): Promise<Etl> {
       [dct.title, 'title'],
       [dct.isPartOf, '_journal'],
       [dct.date, 'publicationDate'],
-      [dct.relation, 'doi']
+      [dct.relation, 'doi'],
+      [dct.hasVersion, 'correspondingArticle'],
+      [schema.relevantForMCAL, 'relevant']
     ),
     pairs('_journal',
       [a, bibo.Journal],
