@@ -1,5 +1,5 @@
-import { Etl, Source, declarePrefix, environments, fromXlsx, toTriplyDb, when } from '@triplyetl/etl/generic'
-import { addIri, iri, pairs, split, triple } from '@triplyetl/etl/ratt'
+import { Etl, Source, declarePrefix, environments, fromCsv, fromXlsx, toTriplyDb, when } from '@triplyetl/etl/generic'
+import { addIri, iris, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
@@ -7,6 +7,7 @@ import { validate } from '@triplyetl/etl/shacl'
 // Declare prefixes.
 const prefix_base = declarePrefix('https://mcal.odissei.nl/')
 const prefix = {
+  orcid: declarePrefix('https://orcid.org/'),
   journal: declarePrefix(prefix_base('id/j/')),
   article: declarePrefix(prefix_base('id/a/')),
   data: declarePrefix(prefix_base('data/')),
@@ -44,10 +45,8 @@ const destination = {
 export default async function (): Promise<Etl> {
   const etl = new Etl({ defaultGraph: graph.instances })
   etl.use(
-    fromXlsx(
-      Source.TriplyDb.asset('odissei', 'mcal',
-        { name: '20230613_MCAL_Inventory_ContentAnalysis.xlsx' })
-    ),
+    fromCsv(Source.TriplyDb.asset('odissei', 'mcal', {name: 'Mcalentory.csv'})),
+    //fromXlsx(Source.TriplyDb.asset('odissei', 'mcal', { name: '20230613_MCAL_Inventory_ContentAnalysis.xlsx' })),  
     addIri({
       prefix: prefix.journal,
       content: 'journalID',
@@ -63,9 +62,9 @@ export default async function (): Promise<Etl> {
       split({
         content: 'orcid',
         separator: ',',
-        key: "_orcids"
+        key: '_orcids'
       }),
-      triple('_article', dct.creator, '_orcids')
+      triple('_article', dct.creator, iris(prefix.orcid, '_orcids'))
     ),
     pairs('_article',
       [a, bibo.AcademicArticle],
