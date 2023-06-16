@@ -70,7 +70,8 @@ export default async function (): Promise<Etl> {
       [a, bibo.AcademicArticle],
       [dct.title, 'title'],
       [dct.isPartOf, '_journal'],
-      [dct.date, 'publicationDate']
+      [dct.date, 'publicationDate'],
+      [dct.relation, 'doi']
     ),
     pairs('_journal',
       [a, bibo.Journal],
