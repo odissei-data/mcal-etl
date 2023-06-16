@@ -1,8 +1,6 @@
-// Import middlewares.
 import { environments, fromJson, Etl, toTriplyDb, declarePrefix, Source } from '@triplyetl/etl/generic'
 import { concat, iri, literal, pairs, str } from '@triplyetl/etl/ratt'
 import { validate } from '@triplyetl/etl/shacl'
-// Import vocabularies.
 import { a, foaf, xsd } from '@triplyetl/etl/vocab'
 
 // Declare prefixes.
