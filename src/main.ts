@@ -1,5 +1,5 @@
 import { Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, when } from '@triplyetl/etl/generic'
-import { addIri, iri, iris, pairs, split, triple } from '@triplyetl/etl/ratt'
+import { addIri, custom, iri, iris, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
@@ -84,14 +84,14 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', schema.contentFeature, iris(prefix.schema, '_contentFeatures'))
     ),
-    /* change({
+    custom.change({
       key: 'relevant', 
       type: 'string',
       change: value => { 
         switch(value) { 
           case 'yes': return true; 
           default: return false
-        }}}), */
+        }}}), 
     pairs('_article',
       [a, bibo.AcademicArticle],
       [dct.title, 'title'],
