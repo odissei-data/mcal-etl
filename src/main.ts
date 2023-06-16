@@ -1,8 +1,9 @@
-import { Etl, Source, declarePrefix, environments, fromCsv, fromXlsx, toTriplyDb, when } from '@triplyetl/etl/generic'
+import { Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, when } from '@triplyetl/etl/generic'
 import { addIri, iri, iris, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
+import { scrypt, secureHeapUsed } from 'crypto'
 
 // Declare prefixes.
 const prefix_base = declarePrefix('https://mcal.odissei.nl/')
@@ -24,7 +25,15 @@ const schema = {
    * Description: Type of material
    */
   material: prefix.schema('material'),
-  relevantForMCAL: prefix.schema('relevantForMcal')
+  relevantForMCAL: prefix.schema('relevantForMcal'),
+  contentFeature: prefix.schema('contentFeature'),
+  researchQuestion: prefix.schema('researchQuestion'),
+  comparativeStudy: prefix.schema('comparativeStudy'),
+  reliability: prefix.schema('reliability'),
+  contentAnalysisTypeAutomated: prefix.schema('contentAnalysisTypeAutomated'),
+  fair: prefix.schema('fair'),
+  preRegistered: prefix.schema('preRegistered'),
+  openAccess: prefix.schema('openAccess')
 }
 
 const graph = {
@@ -66,6 +75,23 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', dct.creator, iris(prefix.orcid, '_orcids'))
     ),
+    when(
+      context => context.getString('contentFeatures') != 'NA',
+      split({
+        content: 'contentFeatures',
+        separator: ',',
+        key: '_contentFeatures'
+      }),
+      triple('_article', schema.contentFeature, iris(prefix.schema, '_contentFeatures'))
+    ),
+    /* change({
+      key: 'relevant', 
+      type: 'string',
+      change: value => { 
+        switch(value) { 
+          case 'yes': return true; 
+          default: return false
+        }}}), */
     pairs('_article',
       [a, bibo.AcademicArticle],
       [dct.title, 'title'],
@@ -73,7 +99,17 @@ export default async function (): Promise<Etl> {
       [dct.date, 'publicationDate'],
       [dct.relation, 'doi'],
       [dct.hasVersion, iri('correspondingArticle')],
-      [schema.relevantForMCAL, 'relevant']
+      [dct.temporal, 'period'] ,
+      [dct.spatial, 'countries'],
+      [schema.relevantForMCAL, 'relevant'],
+      [schema.material, 'material'],
+      [schema.researchQuestion, 'rq'],
+      [schema.comparativeStudy, 'comparativeStudy'],
+      [schema.reliability, 'reliability'],
+      [schema.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
+      [schema.fair, 'fair'],
+      [schema.preRegistered,'preRegistered'],
+      [schema.openAccess, 'openAccess']
     ),
     pairs('_journal',
       [a, bibo.Journal],
