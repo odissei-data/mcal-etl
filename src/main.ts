@@ -72,7 +72,7 @@ export default async function (): Promise<Etl> {
       [dct.isPartOf, '_journal'],
       [dct.date, 'publicationDate'],
       [dct.relation, 'doi'],
-      [dct.hasVersion, 'correspondingArticle'],
+      [dct.hasVersion, iri('correspondingArticle')],
       [schema.relevantForMCAL, 'relevant']
     ),
     pairs('_journal',
