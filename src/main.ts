@@ -96,7 +96,8 @@ export default async function (): Promise<Etl> {
       type: 'string',
       change: value => { 
         switch(value) { 
-          case 'yes': return true; 
+          case 'yes': return true;
+          case 'Yes': return true;
           default: return false
         }}}), 
     pairs('_article',
