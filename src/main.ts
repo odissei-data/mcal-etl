@@ -84,6 +84,15 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', schema.contentFeature, iris(prefix.schema, '_contentFeatures'))
     ),
+    when(
+      context=> context.getString('material') != 'NA',
+      split({
+        content: 'material',
+        separator: ',',
+        key: '_materials'
+      }),
+      triple('_article', schema.material, '_materials')
+    ),
     custom.change({
       key: 'relevant', 
       type: 'string',
@@ -102,7 +111,6 @@ export default async function (): Promise<Etl> {
       [dct.temporal, 'period'] ,
       [dct.spatial, 'countries'],
       [schema.relevantForMCAL, 'relevant'],
-      [schema.material, 'material'],
       [schema.researchQuestion, 'rq'],
       [schema.comparativeStudy, 'comparativeStudy'],
       [schema.reliability, 'reliability'],
