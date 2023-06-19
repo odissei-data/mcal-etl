@@ -13,10 +13,10 @@ const prefix = {
   article: declarePrefix(prefix_base('id/a/')),
   data: declarePrefix(prefix_base('data/')),
   graph: declarePrefix(prefix_base('graph/')),
-  schema: declarePrefix(prefix_base('schema/'))
+  mcal: declarePrefix(prefix_base('schema/'))
 }
 
-const schema = {
+const mcal = {
   /**
    * Category: property
    *
@@ -24,22 +24,20 @@ const schema = {
    *
    * Description: Type of material
    */
-  material: prefix.schema('material'),
-  relevantForMCAL: prefix.schema('relevantForMcal'),
-  contentFeature: prefix.schema('contentFeature'),
-  researchQuestion: prefix.schema('researchQuestion'),
-  comparativeStudy: prefix.schema('comparativeStudy'),
-  reliability: prefix.schema('reliability'),
-  contentAnalysisTypeAutomated: prefix.schema('contentAnalysisTypeAutomated'),
-  fair: prefix.schema('fair'),
-  preRegistered: prefix.schema('preRegistered'),
-  openAccess: prefix.schema('openAccess')
+  material: prefix.mcal('material'),
+  relevantForMCAL: prefix.mcal('relevantForMcal'),
+  contentFeature: prefix.mcal('contentFeature'),
+  researchQuestion: prefix.mcal('researchQuestion'),
+  comparativeStudy: prefix.mcal('comparativeStudy'),
+  reliability: prefix.mcal('reliability'),
+  contentAnalysisTypeAutomated: prefix.mcal('contentAnalysisTypeAutomated'),
+  fair: prefix.mcal('fair'),
+  preRegistered: prefix.mcal('preRegistered'),
+  openAccess: prefix.mcal('openAccess')
 }
 
 const graph = {
-  instances: prefix.graph('instances'),
-  metadata: prefix.graph('metadata'),
-  schema: prefix.graph('schema')
+  instances: prefix.graph('instances')
 }
 
 const destination = {
@@ -82,7 +80,7 @@ export default async function (): Promise<Etl> {
         separator: ',',
         key: '_contentFeatures'
       }),
-      triple('_article', schema.contentFeature, iris(prefix.schema, '_contentFeatures'))
+      triple('_article', mcal.contentFeature, iris(prefix.mcal, '_contentFeatures'))
     ),
     when(
       context=> context.getString('material') != 'NA',
@@ -91,7 +89,7 @@ export default async function (): Promise<Etl> {
         separator: ',',
         key: '_materials'
       }),
-      triple('_article', schema.material, '_materials')
+      triple('_article', mcal.material, '_materials')
     ),
     custom.change({
       key: 'relevant', 
@@ -110,14 +108,14 @@ export default async function (): Promise<Etl> {
       [dct.hasVersion, iri('correspondingArticle')],
       [dct.temporal, 'period'] ,
       [dct.spatial, 'countries'],
-      [schema.relevantForMCAL, 'relevant'],
-      [schema.researchQuestion, 'rq'],
-      [schema.comparativeStudy, 'comparativeStudy'],
-      [schema.reliability, 'reliability'],
-      [schema.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
-      [schema.fair, 'fair'],
-      [schema.preRegistered,'preRegistered'],
-      [schema.openAccess, 'openAccess']
+      [mcal.relevantForMCAL, 'relevant'],
+      [mcal.researchQuestion, 'rq'],
+      [mcal.comparativeStudy, 'comparativeStudy'],
+      [mcal.reliability, 'reliability'],
+      [mcal.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
+      [mcal.fair, 'fair'],
+      [mcal.preRegistered,'preRegistered'],
+      [mcal.openAccess, 'openAccess']
     ),
     pairs('_journal',
       [a, bibo.Journal],
