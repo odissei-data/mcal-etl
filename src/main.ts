@@ -54,6 +54,7 @@ export default async function (): Promise<Etl> {
   const etl = new Etl({ defaultGraph: graph.instances })
   etl.use(
     fromCsv(Source.TriplyDb.asset('odissei', 'mcal', {name: 'Mcalentory.csv'})),
+    logRecord(),
     addIri({ // Generate IRI for article, maybe use DOI if available?
       prefix: prefix.article,
       content: 'articleID',
@@ -98,6 +99,7 @@ export default async function (): Promise<Etl> {
         separator: ',',
         key: '_countries'
       }),
+      logRecord({key:'_countries'}),
       triple('_article', dct.spatial, '_countries')
     ),
     custom.change({
@@ -130,7 +132,6 @@ export default async function (): Promise<Etl> {
       [a, bibo.Journal],
       [dct.title, 'journal']
     ),
-    logRecord(),
     validate(Source.file('static/model.trig')),
     toTriplyDb(destination)
   )
