@@ -93,7 +93,6 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', mcal.material, '_materials')
     ),
-    /* Commented out until trailing comma bug is fixed
     when(
       context=> context.getString('countries') != 'NA',
       split({
@@ -103,7 +102,6 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', dct.spatial, '_countries')
     ),
-    */
     when(
       context=> context.getString('dataAvailableType') != 'NA',
       split({
