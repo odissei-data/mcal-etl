@@ -1,64 +1,168 @@
-// Import middlewares.
-import { environments, fromJson, Etl, toTriplyDb, declarePrefix, Source } from '@triplyetl/etl/generic'
-import { concat, iri, literal, pairs, str } from '@triplyetl/etl/ratt'
+import { Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, when } from '@triplyetl/etl/generic'
+import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
+import { logRecord } from '@triplyetl/etl/debug'
+import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
-// Import vocabularies.
-import { a, foaf, xsd } from '@triplyetl/etl/vocab'
+// import { scrypt, secureHeapUsed } from 'crypto'
 
 // Declare prefixes.
-const prefix_base = declarePrefix('https://example.org/')
-const prefix_id = declarePrefix(prefix_base('id/'))
+const prefix_base = declarePrefix('https://mcal.odissei.nl/')
 const prefix = {
-  id: prefix_id,
-  graph: declarePrefix(prefix_id('graph/')),
+  orcid: declarePrefix('https://orcid.org/'),
+  journal: declarePrefix(prefix_base('id/j/')),
+  article: declarePrefix(prefix_base('id/a/')),
+  data: declarePrefix(prefix_base('data/')),
+  graph: declarePrefix(prefix_base('graph/')),
+  mcal: declarePrefix(prefix_base('schema/'))
 }
 
-// Declare graph names.
+const mcal = {
+  /**
+   * Properties defined by MCAL because we could not 
+   * find an awesome property somewhere else...
+   */
+  comparativeStudy: prefix.mcal('comparativeStudy'),
+  contentFeature: prefix.mcal('contentFeature'),
+  contentAnalysisType: prefix.mcal('contentAnalysisType'),
+  contentAnalysisTypeAutomated: prefix.mcal('contentAnalysisTypeAutomated'),
+  dataAvailableType: prefix.mcal('dataAvailableType'),
+  dataAvailableLink: prefix.mcal('dataAvailableLink'),  
+  fair: prefix.mcal('fair'),
+  material: prefix.mcal('material'),
+  openAccess: prefix.mcal('openAccess'),
+  preRegistered: prefix.mcal('preRegistered'),
+  relevantForMCAL: prefix.mcal('relevantForMcal'),
+  reliability: prefix.mcal('reliability'),
+  reliabilityType: prefix.mcal('reliabilityType'),
+  researchQuestion: prefix.mcal('researchQuestion')
+}
+
 const graph = {
-  instances: prefix.graph('instances'),
+  instances: prefix.graph('instances')
 }
 
 const destination = {
-  account:
-    Etl.environment === environments.Development
-      ? undefined
-      : 'odissei',
+  account: Etl.environment === environments.Development ? undefined : 'odissei',
   dataset:
     Etl.environment === environments.Acceptance
       ? 'mcal-acceptance'
       : Etl.environment === environments.Testing
         ? 'mcal-testing'
-        : 'mcal',
+        : 'mcal'
 }
 
 export default async function (): Promise<Etl> {
-  // Create an extract-transform-load (ETL) process.
   const etl = new Etl({ defaultGraph: graph.instances })
   etl.use(
-
-    // Connect to one or more data sources.
-    fromJson([{ firstName: 'J.', age: 32, something: 'c' }]),
-
-    // Transformations change data in the Record.
-    concat({
-      content: ['firstName', str('Doe')],
-      separator: ' ',
-      key: '_fullName',
+    fromCsv(Source.TriplyDb.asset('odissei', 'mcal', {name: 'Mcalentory.csv'})),
+    logRecord(),
+    addIri({ // Generate IRI for article, maybe use DOI if available?
+      prefix: prefix.article,
+      content: 'articleID',
+      key: '_article'
     }),
-
-    // Assertions add linked data to the RDF store.
-    pairs(iri(prefix.id, 'firstName'),
-      [a, foaf.Person],
-      [foaf.age, literal('age', xsd.nonNegativeInteger)],
-      [foaf.name, '_fullName'],
+    addIri({ // Generate IRI for journal, is there a persistant ID for journals?
+      prefix: prefix.journal,
+      content: 'journalID',
+      key: '_journal'
+    }),
+    when(
+      context => context.getString('orcid') != 'NA',
+      split({
+        content: 'orcid',
+        separator: ',',
+        key: '_orcids'
+      }),
+      triple('_article', dct.creator, iris(prefix.orcid, '_orcids'))
     ),
-
-    // Validation ensures that your instance data follows the data model.
+    when(
+      context => context.getString('contentFeatures') != 'NA',
+      split({
+        content: 'contentFeatures',
+        separator: ',',
+        key: '_contentFeatures'
+      }),
+      triple('_article', mcal.contentFeature, iris(prefix.mcal, '_contentFeatures'))
+    ),
+    when(
+      context=> context.getString('material') != 'NA',
+      split({
+        content: 'material',
+        separator: ',',
+        key: '_materials'
+      }),
+      triple('_article', mcal.material, '_materials')
+    ),
+    /* Commented out until trailing comma bug is fixed
+    when(
+      context=> context.getString('countries') != 'NA',
+      split({
+        content: 'countries',
+        separator: ',',
+        key: '_countries'
+      }),
+      triple('_article', dct.spatial, '_countries')
+    ),
+    */
+    when(
+      context=> context.getString('dataAvailableType') != 'NA',
+      split({
+        content: 'dataAvailableType',
+        separator: ',',
+        key: '_dataAvailableTypes'
+      }),
+      triple('_article', mcal.dataAvailableType, '_dataAvailableTypes')
+    ),
+    when(
+      context=> context.getString('dataAvailableLink') != 'NA',
+      triple('_article', mcal.dataAvailableLink, 'dataAvailableLink')
+    ),
+    custom.change({
+      key: 'relevant', 
+      type: 'string',
+      change: value => { 
+        switch(value) { 
+          case 'yes': return true;
+          case 'Yes': return true;
+          default: return false
+        }}}), 
+    when(
+      context=> context.getString('reliabilityType') != 'NA',
+      lowercase({
+        content: 'reliabilityType',
+        key: '_reliabilityType'
+      }),
+      split({
+        content: '_reliabilityType',
+        separator: ',',
+        key: '_reliabilityTypes'
+      }),
+      triple('_article', mcal.reliabilityType, '_reliabilityTypes')
+    ),
+    pairs('_article',
+      [a, bibo.AcademicArticle],
+      [dct.title, 'title'],
+      [dct.isPartOf, '_journal'],
+      [dct.date, 'publicationDate'],
+      [dct.relation, 'doi'],
+      [dct.hasVersion, iri('correspondingArticle')],
+      [dct.temporal, 'period'] ,
+      [mcal.relevantForMCAL, 'relevant'],
+      [mcal.researchQuestion, 'rq'],
+      [mcal.comparativeStudy, 'comparativeStudy'],
+      [mcal.reliability, 'reliability'],
+      [mcal.contentAnalysisType, 'contentAnalysisType'],
+      [mcal.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
+      [mcal.fair, 'fair'],
+      [mcal.preRegistered,'preRegistered'],
+      [mcal.openAccess, 'openAccess']
+    ),
+    pairs('_journal',
+      [a, bibo.Journal],
+      [dct.title, 'journal']
+    ),
     validate(Source.file('static/model.trig')),
-
-    // Publish your data in TriplyDB.
-    toTriplyDb(destination),
-
+    toTriplyDb(destination)
   )
   return etl
 }

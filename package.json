@@ -3,6 +3,7 @@
   "dependencies": {
     "@triplyetl/etl": "^2.0.6"
   },
+  "type": "module",
   "description": "ETL for mcal",
   "devDependencies": {
     "@types/node": "16.18.35",
@@ -33,7 +34,6 @@
     "util:validateTs": "tsc --noEmit",
     "util:validateTs:watch": "tsc --noEmit --watch --preserveWatchOutput"
   },
-  "type": "module",
   "version": "1.0.0",
   "packageManager": "yarn@3.2.1",
   "resolutions": {
