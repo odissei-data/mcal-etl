@@ -3,7 +3,7 @@ import { addIri, custom, iri, iris, pairs, split, triple } from '@triplyetl/etl/
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
-import { scrypt, secureHeapUsed } from 'crypto'
+// import { scrypt, secureHeapUsed } from 'crypto'
 
 // Declare prefixes.
 const prefix_base = declarePrefix('https://mcal.odissei.nl/')
@@ -18,23 +18,22 @@ const prefix = {
 
 const mcal = {
   /**
-   * Category: property
-   *
-   * Label: has material
-   *
-   * Description: Type of material
+   * Properties defined by MCAL because we could not 
+   * find an awesome property somewhere else...
    */
-  material: prefix.mcal('material'),
-  relevantForMCAL: prefix.mcal('relevantForMcal'),
-  contentFeature: prefix.mcal('contentFeature'),
-  researchQuestion: prefix.mcal('researchQuestion'),
   comparativeStudy: prefix.mcal('comparativeStudy'),
+  contentFeature: prefix.mcal('contentFeature'),
+  contentAnalysisTypeAutomated: prefix.mcal('contentAnalysisTypeAutomated'),
+  dataAvailableType: prefix.mcal('dataAvailableType'),
+  dataAvailableLink: prefix.mcal('dataAvailableLink'),  
+  fair: prefix.mcal('fair'),
+  material: prefix.mcal('material'),
+  openAccess: prefix.mcal('openAccess'),
+  preRegistered: prefix.mcal('preRegistered'),
+  relevantForMCAL: prefix.mcal('relevantForMcal'),
   reliability: prefix.mcal('reliability'),
   reliabilityType: prefix.mcal('reliabilityType'),
-  contentAnalysisTypeAutomated: prefix.mcal('contentAnalysisTypeAutomated'),
-  fair: prefix.mcal('fair'),
-  preRegistered: prefix.mcal('preRegistered'),
-  openAccess: prefix.mcal('openAccess')
+  researchQuestion: prefix.mcal('researchQuestion')
 }
 
 const graph = {
@@ -93,6 +92,7 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', mcal.material, '_materials')
     ),
+    /* Commented out until trailing comma bug is fixed
     when(
       context=> context.getString('countries') != 'NA',
       split({
@@ -100,8 +100,21 @@ export default async function (): Promise<Etl> {
         separator: ',',
         key: '_countries'
       }),
-      logRecord({key:'_countries'}),
       triple('_article', dct.spatial, '_countries')
+    ),
+    */
+    when(
+      context=> context.getString('dataAvailableType') != 'NA',
+      split({
+        content: 'dataAvailableType',
+        separator: ',',
+        key: '_dataAvailableTypes'
+      }),
+      triple('_article', mcal.dataAvailableType, '_dataAvailableTypes')
+    ),
+    when(
+      context=> context.getString('dataAvailableLink') != 'NA',
+      triple('_article', mcal.dataAvailableLink, 'dataAvailableLink')
     ),
     custom.change({
       key: 'relevant', 
