@@ -3,7 +3,6 @@ import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@tri
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
-import { lowerCase } from 'lodash'
 // import { scrypt, secureHeapUsed } from 'crypto'
 
 // Declare prefixes.
@@ -24,6 +23,7 @@ const mcal = {
    */
   comparativeStudy: prefix.mcal('comparativeStudy'),
   contentFeature: prefix.mcal('contentFeature'),
+  contentAnalysisType: prefix.mcal('contentAnalysisType'),
   contentAnalysisTypeAutomated: prefix.mcal('contentAnalysisTypeAutomated'),
   dataAvailableType: prefix.mcal('dataAvailableType'),
   dataAvailableLink: prefix.mcal('dataAvailableLink'),  
@@ -151,6 +151,7 @@ export default async function (): Promise<Etl> {
       [mcal.researchQuestion, 'rq'],
       [mcal.comparativeStudy, 'comparativeStudy'],
       [mcal.reliability, 'reliability'],
+      [mcal.contentAnalysisType, 'contentAnalysisType'],
       [mcal.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
       [mcal.fair, 'fair'],
       [mcal.preRegistered,'preRegistered'],
