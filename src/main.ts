@@ -1,8 +1,9 @@
 import { Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, when } from '@triplyetl/etl/generic'
-import { addIri, custom, iri, iris, pairs, split, triple } from '@triplyetl/etl/ratt'
+import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
+import { lowerCase } from 'lodash'
 // import { scrypt, secureHeapUsed } from 'crypto'
 
 // Declare prefixes.
@@ -125,6 +126,19 @@ export default async function (): Promise<Etl> {
           case 'Yes': return true;
           default: return false
         }}}), 
+    when(
+      context=> context.getString('reliabilityType') != 'NA',
+      lowercase({
+        content: 'reliabilityType',
+        key: '_reliabilityType'
+      }),
+      split({
+        content: '_reliabilityType',
+        separator: ',',
+        key: '_reliabilityTypes'
+      }),
+      triple('_article', mcal.reliabilityType, '_reliabilityTypes')
+    ),
     pairs('_article',
       [a, bibo.AcademicArticle],
       [dct.title, 'title'],
@@ -137,7 +151,6 @@ export default async function (): Promise<Etl> {
       [mcal.researchQuestion, 'rq'],
       [mcal.comparativeStudy, 'comparativeStudy'],
       [mcal.reliability, 'reliability'],
-      [mcal.reliabilityType, 'reliabilityType'],
       [mcal.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
       [mcal.fair, 'fair'],
       [mcal.preRegistered,'preRegistered'],
