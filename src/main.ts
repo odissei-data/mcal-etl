@@ -91,6 +91,15 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', mcal.material, '_materials')
     ),
+    when(
+      context=> context.getString('countries') != 'NA',
+      split({
+        content: 'countries',
+        separator: ',',
+        key: '_countries'
+      }),
+      triple('_article', dct.spatial, '_countries')
+    ),
     custom.change({
       key: 'relevant', 
       type: 'string',
@@ -108,7 +117,6 @@ export default async function (): Promise<Etl> {
       [dct.relation, 'doi'],
       [dct.hasVersion, iri('correspondingArticle')],
       [dct.temporal, 'period'] ,
-      [dct.spatial, 'countries'],
       [mcal.relevantForMCAL, 'relevant'],
       [mcal.researchQuestion, 'rq'],
       [mcal.comparativeStudy, 'comparativeStudy'],
