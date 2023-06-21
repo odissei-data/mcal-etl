@@ -42,7 +42,7 @@ const graph = {
 }
 
 const destination = {
-  account: Etl.environment === environments.Development ? undefined : 'odissei',
+  account: Etl.environment === environments.Development ? "jacco-van-ossenbruggen" : 'odissei',
   dataset:
     Etl.environment === environments.Acceptance
       ? 'mcal-acceptance'
@@ -54,7 +54,7 @@ const destination = {
 export default async function (): Promise<Etl> {
   const etl = new Etl({ defaultGraph: graph.instances })
   etl.use(
-    fromCsv(Source.TriplyDb.asset('odissei', 'mcal', {name: 'Mcalentory.csv'})),
+    fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'Mcalentory.csv'})),
     logRecord(),
     addIri({ // Generate IRI for article, maybe use DOI if available?
       prefix: prefix.article,
@@ -115,6 +115,10 @@ export default async function (): Promise<Etl> {
       context=> context.getString('dataAvailableLink') != 'NA',
       triple('_article', mcal.dataAvailableLink, 'dataAvailableLink')
     ),
+    when(
+      context => context.getString('doi') != 'NA',
+      triple('_article', dct.relation, iri('doi'))
+    ),
     custom.change({
       key: 'relevant', 
       type: 'string',
@@ -142,7 +146,6 @@ export default async function (): Promise<Etl> {
       [dct.title, 'title'],
       [dct.isPartOf, '_journal'],
       [dct.date, 'publicationDate'],
-      [dct.relation, 'doi'],
       [dct.hasVersion, iri('correspondingArticle')],
       [dct.temporal, 'period'] ,
       [mcal.relevantForMCAL, 'relevant'],
