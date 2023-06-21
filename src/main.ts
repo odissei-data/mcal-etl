@@ -9,6 +9,7 @@ import { validate } from '@triplyetl/etl/shacl'
 const prefix_base = declarePrefix('https://mcal.odissei.nl/')
 const prefix = {
   orcid: declarePrefix('https://orcid.org/'),
+  issn: declarePrefix('https://portal.issn.org/resource/ISSN/'),
   journal: declarePrefix(prefix_base('id/j/')),
   article: declarePrefix(prefix_base('id/a/')),
   data: declarePrefix(prefix_base('data/')),
@@ -118,6 +119,10 @@ export default async function (): Promise<Etl> {
     when(
       context => context.getString('doi') != 'NA',
       triple('_article', dct.relation, iri('doi'))
+    ),
+    when(
+      context => context.getString('issn') != 'NA',
+      triple('_journal', bibo.issn, iri(prefix.issn, 'issn'))
     ),
     custom.change({
       key: 'relevant', 
