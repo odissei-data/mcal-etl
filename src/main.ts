@@ -7,6 +7,8 @@ import { validate } from '@triplyetl/etl/shacl'
 
 // Declare prefixes.
 const prefix_base = declarePrefix('https://mcal.odissei.nl/')
+const prefix_cv_base = declarePrefix(prefix_base('cv/'))
+
 const prefix = {
   orcid: declarePrefix('https://orcid.org/'),
   issn: declarePrefix('https://portal.issn.org/resource/ISSN/'),
@@ -14,7 +16,8 @@ const prefix = {
   article: declarePrefix(prefix_base('id/a/')),
   data: declarePrefix(prefix_base('data/')),
   graph: declarePrefix(prefix_base('graph/')),
-  mcal: declarePrefix(prefix_base('schema/'))
+  mcal: declarePrefix(prefix_base('schema/')),
+  cat: declarePrefix(prefix_cv_base('contentAnalysisType/')),
 }
 
 const mcal = {
@@ -86,6 +89,32 @@ export default async function (): Promise<Etl> {
       triple('_article', mcal.contentFeature, iris(prefix.mcal, '_contentFeatures'))
     ),
     when(
+      context => context.getString('contentAnalysisType') != 'NA',
+      /* split({
+        content: 'contentAnalysisType',
+        separator: ',',
+        key: '_contentAnalysisTypes'
+      }),
+      forEach('_contentAnalysisTypes',
+        logRecord({key: '$index'})
+      ),*/
+      custom.change({
+        key: 'contentAnalysisType', 
+        type: 'string',
+        change: value => { 
+          switch(value) { 
+            case 'Qualitative analysis': return 'CAT1';
+            case 'Quantitative analysis': return 'CAT2';
+            case 'Quantitative analysis with manual coding': return 'CAT3';
+            case 'Automated analysis': return 'CAT4';
+            case 'Other, please describe': return 'CAT0';
+            default: return value;
+          }
+        }
+      }),
+      triple('_article', mcal.contentAnalysisType, iri(prefix.cat, 'contentAnalysisType'))
+    ), 
+    when(
       context=> context.getString('material') != 'NA',
       split({
         content: 'material',
@@ -146,6 +175,7 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', mcal.reliabilityType, '_reliabilityTypes')
     ),
+
     pairs('_article',
       [a, bibo.AcademicArticle],
       [dct.title, 'title'],
@@ -157,7 +187,6 @@ export default async function (): Promise<Etl> {
       [mcal.researchQuestion, 'rq'],
       [mcal.comparativeStudy, 'comparativeStudy'],
       [mcal.reliability, 'reliability'],
-      [mcal.contentAnalysisType, 'contentAnalysisType'],
       [mcal.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
       [mcal.fair, 'fair'],
       [mcal.preRegistered,'preRegistered'],
