@@ -17,7 +17,7 @@ const prefix = {
   data: declarePrefix(prefix_base('data/')),
   graph: declarePrefix(prefix_base('graph/')),
   mcal: declarePrefix(prefix_base('schema/')),
-  cat: declarePrefix(prefix_cv_base('contentAnalysisType/')),
+  cat: declarePrefix(prefix_cv_base('contentAnalysisType/v0.1/')),
 }
 
 const mcal = {
