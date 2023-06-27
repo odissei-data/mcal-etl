@@ -27,9 +27,11 @@ mcal:model {
     sh:closed false ; # set to true when this shape is complete
     sh:property
         shp:articlePartOfJournal ,
+        shp:hasVersion ,
         shp:title ;
     sh:targetClass bibo:AcademicArticle .
     
+  # title property used for journals and articles
   shp:title 
     a sh:PropertyShape ;
     sh:datatype xsd:string ;
@@ -37,6 +39,7 @@ mcal:model {
     sh:maxCount 1 ;
     sh:path dct:title .
 
+  # ISSN property for journals
   shp:issn
     a sh:PropertyShape ;
     sh:minCount 1 ;
@@ -44,11 +47,19 @@ mcal:model {
     sh:nodeKind sh:IRI ;
     sh:path bibo:issn .
 
+  # At the moment, every article needs to be published in a journal (debatable)
   shp:articlePartOfJournal
     a sh:PropertyShape ;
     sh:minCount 1;
     sh:maxCount 1;
-    sh:nodeKind sh:IRI;
+    sh:nodeKind sh:IRI ;
     sh:path dct:isPartOf ;
     sh:class bibo:Journal .
+
+  # Every article has at least one (online) version
+  shp:hasVersion
+    a sh:PropertyShape ;
+    sh:minCount 1;
+    sh:nodeKind sh:IRI ;
+    sh:path dct:hasVersion .
 }
