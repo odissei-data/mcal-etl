@@ -12,13 +12,8 @@ prefix shp:   <https://mcal.odissei.nl/schema/shp/>
 prefix mcal: <https://mcal.odissei.nl/schema/>
 
 mcal:model {
-
-  shp:AcademicArticle
-    a sh:NodeShape ;
-    sh:closed false ; # set to true when this shape is complete
-    sh:property shp:title ;
-    sh:targetClass bibo:AcademicArticle .
-    
+  # Journal shape, for now a journal is just a a node of type bibo:Journal
+  #  with a title and ISSN.
   shp:Journal
     a sh:NodeShape ;
     sh:closed true ; 
@@ -26,6 +21,15 @@ mcal:model {
     sh:property shp:title, shp:issn ;
     sh:targetClass bibo:Journal .
 
+  # Articles are open ended
+  shp:AcademicArticle
+    a sh:NodeShape ;
+    sh:closed false ; # set to true when this shape is complete
+    sh:property
+        shp:articlePartOfJournal ,
+        shp:title ;
+    sh:targetClass bibo:AcademicArticle .
+    
   shp:title 
     a sh:PropertyShape ;
     sh:datatype xsd:string ;
@@ -37,6 +41,14 @@ mcal:model {
     a sh:PropertyShape ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
+    sh:nodeKind sh:IRI ;
     sh:path bibo:issn .
 
+  shp:articlePartOfJournal
+    a sh:PropertyShape ;
+    sh:minCount 1;
+    sh:maxCount 1;
+    sh:nodeKind sh:IRI;
+    sh:path dct:isPartOf ;
+    sh:class bibo:Journal .
 }
