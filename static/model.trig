@@ -5,6 +5,7 @@ prefix sh:   <http://www.w3.org/ns/shacl#>
 prefix xsd:  <http://www.w3.org/2001/XMLSchema#>
 prefix bibo: <http://purl.org/ontology/bibo/>
 prefix dct:  <http://purl.org/dc/terms/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
 # Project-specific prefix
 prefix graph: <https://mcal.odissei.nl/graph/>
@@ -18,7 +19,9 @@ mcal:model {
     a sh:NodeShape ;
     sh:closed true ; 
     sh:ignoredProperties ( rdf:type );
-    sh:property shp:title, shp:issn ;
+    sh:property
+      shp:title,
+      shp:issn ;
     sh:targetClass bibo:Journal .
 
   # Articles are open ended
@@ -28,7 +31,8 @@ mcal:model {
     sh:property
         shp:articlePartOfJournal ,
         shp:hasVersion ,
-        shp:title ;
+        shp:title ,
+        shp:contentAnalysisType ;
     sh:targetClass bibo:AcademicArticle .
     
   # title property used for journals and articles
@@ -62,4 +66,13 @@ mcal:model {
     sh:minCount 1;
     sh:nodeKind sh:IRI ;
     sh:path dct:hasVersion .
+
+  # Optional: Content Anaylsis Type values are based on a small SKOS vocabulary
+  shp:contentAnalysisType
+    a sh:PropertyShape ;
+    sh:minCount 0;
+    sh:nodeKind sh:IRI ;
+    # Triply SHACL validator does not like this:
+    # sh:class skos:Concept ;
+    sh:path mcal:contentAnalysisType .
 }
