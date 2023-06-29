@@ -18,6 +18,8 @@ const prefix = {
   graph: declarePrefix(prefix_base('graph/')),
   mcal: declarePrefix(prefix_base('schema/')),
   cat: declarePrefix(prefix_cv_base('contentAnalysisType/v0.1/')),
+  rqt: declarePrefix(prefix_cv_base('researchQuestionType/v0.1/')),
+
 }
 
 const mcal = {
@@ -38,7 +40,7 @@ const mcal = {
   relevantForMCAL: prefix.mcal('relevantForMcal'),
   reliability: prefix.mcal('reliability'),
   reliabilityType: prefix.mcal('reliabilityType'),
-  researchQuestion: prefix.mcal('researchQuestion')
+  researchQuestionType: prefix.mcal('researchQuestionType')
 }
 
 const graph = {
@@ -95,8 +97,6 @@ export default async function (): Promise<Etl> {
         separator: ',',
         key: '_contentAnalysisTypes'
       }),
-      forEach('_contentAnalysisTypes',
-        logRecord({key: '$index'})
       ),*/
       custom.change({
         key: 'contentAnalysisType', 
@@ -114,6 +114,24 @@ export default async function (): Promise<Etl> {
       }),
       triple('_article', mcal.contentAnalysisType, iri(prefix.cat, 'contentAnalysisType'))
     ), 
+    when(
+      context => context.getString('rq') != 'NA',
+      custom.change({
+        key: 'rq',
+        type: 'string',
+        change: value => {
+          switch(value) {
+            case 'descriptive': return 'RQT1';
+            case 'explaining media content': return 'RQT2';
+            case 'effects on citizens': return 'RQT3';
+            case 'effects on policy/politics': return 'RQT4';
+            case 'others, namely...': return 'RQT0';
+            default: return value;
+          }
+        }
+      }),
+      triple('_article', mcal.researchQuestionType, iri(prefix.rqt, 'rq'))
+    ),
     when(
       context=> context.getString('material') != 'NA',
       split({
@@ -184,7 +202,6 @@ export default async function (): Promise<Etl> {
       [dct.hasVersion, iri('correspondingArticle')],
       [dct.temporal, 'period'] ,
       [mcal.relevantForMCAL, 'relevant'],
-      [mcal.researchQuestion, 'rq'],
       [mcal.comparativeStudy, 'comparativeStudy'],
       [mcal.reliability, 'reliability'],
       [mcal.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
