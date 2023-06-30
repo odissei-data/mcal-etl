@@ -3,7 +3,6 @@ import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@tri
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
-// import { scrypt, secureHeapUsed } from 'crypto'
 
 // Declare prefixes.
 const prefix_base = declarePrefix('https://mcal.odissei.nl/')
@@ -19,7 +18,6 @@ const prefix = {
   mcal: declarePrefix(prefix_base('schema/')),
   cat: declarePrefix(prefix_cv_base('contentAnalysisType/v0.1/')),
   rqt: declarePrefix(prefix_cv_base('researchQuestionType/v0.1/')),
-
 }
 
 const mcal = {
@@ -92,27 +90,30 @@ export default async function (): Promise<Etl> {
     ),
     when(
       context => context.getString('contentAnalysisType') != 'NA',
-      /* split({
+      split({
         content: 'contentAnalysisType',
         separator: ',',
         key: '_contentAnalysisTypes'
       }),
-      ),*/
       custom.change({
-        key: 'contentAnalysisType', 
-        type: 'string',
-        change: value => { 
-          switch(value) { 
-            case 'Qualitative analysis': return 'CAT1';
-            case 'Quantitative analysis': return 'CAT2';
-            case 'Quantitative analysis with manual coding': return 'CAT3';
-            case 'Automated analysis': return 'CAT4';
-            case 'Other, please describe': return 'CAT0';
-            default: return value;
-          }
-        }
+        key: '_contentAnalysisTypes',
+        type: 'unknown',
+        change: value => {
+          return (value as any).map((value:string) => {
+            switch(value) {
+              case 'Qualitative analysis': return 'CAT1';
+              case 'Qualitative coding': return 'CAT1'; // to be checked with MCAL team
+              case 'Quantitative analysis': return 'CAT2';
+              case "Quantitative analysis with manual coding": return 'CAT3';
+              case 'Automated analysis': return 'CAT4';
+              case 'Other, please describe': return 'CAT0';
+              case '?': return 'CAT0';
+              default: return value;
+            }
+          })
+        },
       }),
-      triple('_article', mcal.contentAnalysisType, iri(prefix.cat, 'contentAnalysisType'))
+      triple('_article', mcal.contentAnalysisType, iris(prefix.cat, '_contentAnalysisTypes'))
     ), 
     when(
       context => context.getString('rq') != 'NA',
