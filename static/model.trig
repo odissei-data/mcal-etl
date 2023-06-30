@@ -32,6 +32,7 @@ mcal:model {
         shp:articlePartOfJournal ,
         shp:hasVersion ,
         shp:title ,
+        shp:researchQuestionType ,
         shp:contentAnalysisType ;
     sh:targetClass bibo:AcademicArticle .
     
@@ -74,4 +75,12 @@ mcal:model {
     sh:nodeKind sh:IRI ;
     sh:class skos:Concept ;
     sh:path mcal:contentAnalysisType .
+
+  # Optional: Content Anaylsis Type values are based on a small SKOS vocabulary
+  shp:researchQuestionType
+    a sh:PropertyShape ;
+    sh:minCount 0;
+    sh:nodeKind sh:IRI ;
+    sh:class skos:Concept ;
+    sh:path mcal:researchQuestionType .
 }
