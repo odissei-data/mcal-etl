@@ -111,27 +111,34 @@ export default async function (): Promise<Etl> {
               default: return value;
             }
           })
-        },
+        }
       }),
       triple('_article', mcal.contentAnalysisType, iris(prefix.cat, '_contentAnalysisTypes'))
     ), 
     when(
       context => context.getString('rq') != 'NA',
+      split({
+        content: 'rq',
+        separator: ',',
+        key: '_rqs'
+      }),
       custom.change({
-        key: 'rq',
-        type: 'string',
+        key: '_rqs',
+        type: 'unknown',
         change: value => {
-          switch(value) {
-            case 'descriptive': return 'RQT1';
-            case 'explaining media content': return 'RQT2';
-            case 'effects on citizens': return 'RQT3';
-            case 'effects on policy/politics': return 'RQT4';
-            case 'others, namely...': return 'RQT0';
-            default: return value;
-          }
+          return (value as any).map((value:string) => {
+            switch(value) {
+              case 'descriptive': return 'RQT1';
+              case 'explaining media content': return 'RQT2';
+              case 'effects on citizens': return 'RQT3';
+              case 'effects on policy/politics': return 'RQT4';
+              case 'others, namely...': return 'RQT0';
+              default: return value;
+            }
+          })
         }
       }),
-      triple('_article', mcal.researchQuestionType, iri(prefix.rqt, 'rq'))
+      triple('_article', mcal.researchQuestionType, iris(prefix.rqt, '_rqs'))
     ),
     when(
       context=> context.getString('material') != 'NA',
@@ -216,7 +223,6 @@ export default async function (): Promise<Etl> {
     ),
     loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/"]})),
     loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/researchQuestionType/v0.1/"]})),
-    //loadRdf(Source.file('static/CVResearchQuestionType.ttl')),
     
     validate(Source.file('static/model.trig'), {terminateOn:"Never"}),
     toTriplyDb(destination)
