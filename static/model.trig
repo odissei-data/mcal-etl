@@ -72,7 +72,6 @@ mcal:model {
     a sh:PropertyShape ;
     sh:minCount 0;
     sh:nodeKind sh:IRI ;
-    # Triply SHACL validator does not like this:
-    # sh:class skos:Concept ;
+    sh:class skos:Concept ;
     sh:path mcal:contentAnalysisType .
 }
