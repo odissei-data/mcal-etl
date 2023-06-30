@@ -215,7 +215,10 @@ export default async function (): Promise<Etl> {
       [dct.title, 'journal']
     ),
     loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/"]})),
-    validate(Source.file('static/model.trig')),
+    loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/researchQuestionType/v0.1/"]})),
+    //loadRdf(Source.file('static/CVResearchQuestionType.ttl')),
+    
+    validate(Source.file('static/model.trig'), {terminateOn:"Never"}),
     toTriplyDb(destination)
   )
   return etl
