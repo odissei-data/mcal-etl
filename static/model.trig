@@ -73,7 +73,7 @@ mcal:model {
     a sh:PropertyShape ;
     sh:minCount 0;
     sh:nodeKind sh:IRI ;
-    sh:class skos:Concept ;
+    # sh:class skos:Concept ; # Temp. disabled due to slow down in current ETL
     sh:path mcal:contentAnalysisType .
 
   # Optional: Content Anaylsis Type values are based on a small SKOS vocabulary
@@ -81,6 +81,6 @@ mcal:model {
     a sh:PropertyShape ;
     sh:minCount 0;
     sh:nodeKind sh:IRI ;
-    sh:class skos:Concept ;
+    # sh:class skos:Concept ; # # Temp. disabled due to slow down in current ETL
     sh:path mcal:researchQuestionType .
 }

@@ -1,4 +1,4 @@
-import { Etl, Source, declarePrefix, environments, fromCsv, loadRdf, toTriplyDb, when } from '@triplyetl/etl/generic'
+import { Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, when } from '@triplyetl/etl/generic'
 import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
@@ -57,8 +57,10 @@ const destination = {
 
 export default async function (): Promise<Etl> {
   const etl = new Etl({ defaultGraph: graph.instances })
+    
   etl.use(
-    fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'Mcalentory.csv'})),
+    fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
+    // fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'Mcalentory.csv'})),
     logRecord(),
     addIri({ // Generate IRI for article, maybe use DOI if available?
       prefix: prefix.article,
@@ -116,14 +118,14 @@ export default async function (): Promise<Etl> {
       triple('_article', mcal.contentAnalysisType, iris(prefix.cat, '_contentAnalysisTypes'))
     ), 
     when(
-      context => context.getString('rq') != 'NA',
+      context => context.getString('rqType') != 'NA',
       split({
-        content: 'rq',
+        content: 'rqType',
         separator: ',',
-        key: '_rqs'
+        key: '_rqTypes'
       }),
       custom.change({
-        key: '_rqs',
+        key: '_rqTypes',
         type: 'unknown',
         change: value => {
           return (value as any).map((value:string) => {
@@ -132,13 +134,15 @@ export default async function (): Promise<Etl> {
               case 'explaining media content': return 'RQT2';
               case 'effects on citizens': return 'RQT3';
               case 'effects on policy/politics': return 'RQT4';
+              case 'effects on politics': return 'RQT4';
+              case 'effects on companies': return 'RQT5';
               case 'others, namely...': return 'RQT0';
               default: return value;
             }
           })
         }
       }),
-      triple('_article', mcal.researchQuestionType, iris(prefix.rqt, '_rqs'))
+      triple('_article', mcal.researchQuestionType, iris(prefix.rqt, '_rqTypes'))
     ),
     when(
       context=> context.getString('material') != 'NA',
@@ -221,10 +225,9 @@ export default async function (): Promise<Etl> {
       [a, bibo.Journal],
       [dct.title, 'journal']
     ),
-    loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/"]})),
-    loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/researchQuestionType/v0.1/"]})),
-    
-    validate(Source.file('static/model.trig'), {terminateOn:"Never"}),
+    //loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/"]})),
+    //loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/researchQuestionType/v0.1/"]})),
+    validate(Source.file('static/model.trig'), {terminateOn:"Violation"}),
     toTriplyDb(destination)
   )
   return etl
