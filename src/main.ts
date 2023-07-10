@@ -59,8 +59,8 @@ export default async function (): Promise<Etl> {
   const etl = new Etl({ defaultGraph: graph.instances })
     
   etl.use(
-    fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
-    // fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'Mcalentory.csv'})),
+    //fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
+    fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'Mcalentory.csv'})),
     logRecord(),
     addIri({ // Generate IRI for article, maybe use DOI if available?
       prefix: prefix.article,
