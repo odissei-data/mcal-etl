@@ -38,7 +38,8 @@ const mcal = {
   relevantForMCAL: prefix.mcal('relevantForMcal'),
   reliability: prefix.mcal('reliability'),
   reliabilityType: prefix.mcal('reliabilityType'),
-  researchQuestionType: prefix.mcal('researchQuestionType')
+  researchQuestion: prefix.mcal('researchQuestion'),
+  researchQuestionType: prefix.mcal('researchQuestionType')  
 }
 
 const graph = {
@@ -143,6 +144,10 @@ export default async function (): Promise<Etl> {
         }
       }),
       triple('_article', mcal.researchQuestionType, iris(prefix.rqt, '_rqTypes'))
+    ),
+    when(
+      context => context.isNotEmpty('researchQuestion'),
+      triple('_article', mcal.researchQuestion, 'researchQuestion')
     ),
     when(
       context=> context.getString('material') != 'NA',
