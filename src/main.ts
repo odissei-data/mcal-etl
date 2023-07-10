@@ -104,13 +104,17 @@ export default async function (): Promise<Etl> {
         change: value => {
           return (value as any).map((value:string) => {
             switch(value) {
+              case '?': return 'CAT0';
+              case 'Other, please describe': return 'CAT0';
               case 'Qualitative analysis': return 'CAT1';
               case 'Qualitative coding': return 'CAT1'; // to be checked with MCAL team
               case 'Quantitative analysis': return 'CAT2';
               case "Quantitative analysis with manual coding": return 'CAT3';
               case 'Automated analysis': return 'CAT4';
-              case 'Other, please describe': return 'CAT0';
-              case '?': return 'CAT0';
+              case 'Associative framing': return 'CAT5';
+              case 'Symbolic framing': return 'CAT6';
+              case 'Concept visibility': return 'CAT7';
+
               default: return value;
             }
           })
