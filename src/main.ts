@@ -89,7 +89,7 @@ export default async function (): Promise<Etl> {
         separator: ',',
         key: '_contentFeatures'
       }),
-      triple('_article', mcal.contentFeature, iris(prefix.mcal, '_contentFeatures'))
+      triple('_article', mcal.contentFeature, '_contentFeatures')
     ),
     when(
       context => context.getString('contentAnalysisType') != 'NA',
