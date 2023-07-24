@@ -17,6 +17,7 @@ const prefix = {
   graph: declarePrefix(prefix_base('graph/')),
   mcal: declarePrefix(prefix_base('schema/')),
   cat: declarePrefix(prefix_cv_base('contentAnalysisType/v0.1/')),
+  cf: declarePrefix(prefix_cv_base('contentFeature/v0.1/')),
   rqt: declarePrefix(prefix_cv_base('researchQuestionType/v0.1/')),
 }
 
@@ -27,6 +28,7 @@ const mcal = {
    */
   comparativeStudy: prefix.mcal('comparativeStudy'),
   contentFeature: prefix.mcal('contentFeature'),
+  cf: prefix.mcal('cf'), 
   contentAnalysisType: prefix.mcal('contentAnalysisType'),
   contentAnalysisTypeAutomated: prefix.mcal('contentAnalysisTypeAutomated'),
   dataAvailableType: prefix.mcal('dataAvailableType'),
@@ -83,14 +85,14 @@ export default async function (): Promise<Etl> {
       triple('_article', dct.creator, iris(prefix.orcid, '_orcids'))
     ),
     when(
-      context => context.getString('cf') != 'NA',
+      context => context.getString('cf') != 'NA', // cf = simplified contentFeature column
       split({
         content: 'cf',
         separator: ',',
-        key: '_contentFeatures'
+        key: '_cfs'
       }),
       custom.change({
-        key: '_contentFeatures',
+        key: '_cfs',
         type: 'unknown',
         change: value => {
           return (value as any).map((value:string) => {
@@ -214,7 +216,7 @@ export default async function (): Promise<Etl> {
           })
         }
       }),
-      triple('_article', mcal.contentFeature, '_contentFeatures')
+      triple('_article', mcal.cf, iris(prefix.cf, '_cfs'))
     ),
     when(
       context => context.getString('contentAnalysisType') != 'NA',
@@ -351,6 +353,7 @@ export default async function (): Promise<Etl> {
       [mcal.comparativeStudy, 'comparativeStudy'],
       [mcal.reliability, 'reliability'],
       [mcal.contentAnalysisTypeAutomated, 'contentAnalysisTypeAutomated'],
+      [mcal.contentFeature, 'contentFeatures'],
       [mcal.fair, 'fair'],
       [mcal.preRegistered,'preRegistered'],
       [mcal.openAccess, 'openAccess']
