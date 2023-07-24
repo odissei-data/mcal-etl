@@ -60,9 +60,9 @@ export default async function (): Promise<Etl> {
   const etl = new Etl({ defaultGraph: graph.instances })
     
   etl.use(
-    //fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
-    fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'Mcalentory.csv'})),
-    //logRecord(),
+    fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
+    // fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'Mcalentory.csv'})),
+    // logRecord(),
     addIri({ // Generate IRI for article, maybe use DOI if available?
       prefix: prefix.article,
       content: 'articleID',
@@ -83,9 +83,9 @@ export default async function (): Promise<Etl> {
       triple('_article', dct.creator, iris(prefix.orcid, '_orcids'))
     ),
     when(
-      context => context.getString('contentFeatures') != 'NA',
+      context => context.getString('cf') != 'NA',
       split({
-        content: 'contentFeatures',
+        content: 'cf',
         separator: ',',
         key: '_contentFeatures'
       }),
@@ -158,8 +158,59 @@ export default async function (): Promise<Etl> {
               case 'generic frames': return 'CFE64'
               case 'conflict framing': return 'CFE65';
               case 'document similarity': return 'CFE66';
+              case 'other: communication strategies': return 'CFE67';
+              case 'other: retrieval cues': return 'CFE68';
+              case 'other: presence of real-time marketing techniques': return 'CFE69';
+              case 'other: retrieval cues': return 'CFE70';
+              case 'actor visibilty': return 'CFE71';
+              case 'age': return 'CFE72';
+              case 'and commercial characteristics': return 'CFE73';
+              case 'diversity': return 'CFE71';
+              case 'domesticity': return 'CFE71';
+              case 'episodic vs. thematic framing': return 'CFE71';
+              case 'ethnic stereotypes?': return 'CFE71';
+              case 'generic frame': return 'CFE71';
+              case 'humour relatedness': return 'CFE71';
+              case 'identification features': return 'CFE71';
+              case 'interactivity': return 'CFE71';
+              case 'journalistic characteristics': return 'CFE71';
+              case 'media agenda diversity': return 'CFE71';
+              case 'mertonian imperatives about science': return 'CFE71';
+              case 'narrative': return 'CFE71';
+              case 'news factors': return 'CFE71';
+              case 'news topics': return 'CFE71';
+              case 'news values': return 'CFE71';
+              case 'nudity': return 'CFE71';
+              case 'other: brand placement': return 'CFE71';
+              case 'other: content overlap': return 'CFE71';
+              case 'other: formal features of public service advertisements': return 'CFE71';
+              case 'other: humour complexity': return 'CFE71';
+              case 'other: journalistic references to the facebook ad library': return 'CFE71';
+              case 'other: main topic of the news story': return 'CFE71';
+              case 'other: news content': return 'CFE71';
+              case 'other: news values': return 'CFE71';
+              case 'other: newspaper position and ad characteristics': return 'CFE71';
+              case 'other: objectivity': return 'CFE71';
+              case 'other: political informaton': return 'CFE71';
+              case 'other: product placement disclosure appearances': return 'CFE71';
+              case 'other: sensationalism in storytelling': return 'CFE71';
+              case 'other: sensationalist news features': return 'CFE71';
+              case 'other: technology': return 'CFE71';
+              case 'populist communication frames and frame elements': return 'CFE71';
+              case 'populist content': return 'CFE71';
+              case 'populist elements': return 'CFE71';
+              case 'populist style': return 'CFE71';
+              case 'preclearance policies': return 'CFE71';
+              case 'prevention vs. repressive framing': return 'CFE71';
+              case 'primary actor': return 'CFE71';
+              case 'product categories': return 'CFE71';
+              case 'product characteristics': return 'CFE71';
+              case 'type of source': return 'CFE71';
+              case 'uncertainty in economic news': return 'CFE71';
+              case 'visibility and framing  of new political parties': return 'CFE71';
+              case 'visual self-presentation': return 'CFE71';
               default:
-                console.error(value); 
+                console.error(value); // process.exit(1);
                 return 'CF0'
             }
           })
