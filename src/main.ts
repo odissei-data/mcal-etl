@@ -45,11 +45,11 @@ const mcal = {
 }
 
 const graph = {
-  instances: prefix.graph('instances')
+  instances: prefix.graph('mcalentory')
 }
 
 const destination = {
-  account: Etl.environment === environments.Development ? "jacco-van-ossenbruggen" : 'odissei',
+  account: process.env.USER ?? "odissei",
   dataset:
     Etl.environment === environments.Acceptance
       ? 'mcal-acceptance'
