@@ -27,8 +27,9 @@ const mcal = {
    * find an awesome property somewhere else...
    */
   comparativeStudy: prefix.mcal('comparativeStudy'),
-  contentFeature: prefix.mcal('contentFeature'),
-  cf: prefix.mcal('cf'), 
+  contentFeatureConcept: prefix.mcal('contentFeatureConcept'),
+  contentFeature: prefix.mcal('contentFeature'),  // mainly here for debugging contentFeatureConcept
+  cf: prefix.mcal('cf'),                          // mainly here for debugging contentFeatureConcept
   contentAnalysisType: prefix.mcal('contentAnalysisType'),
   contentAnalysisTypeAutomated: prefix.mcal('contentAnalysisTypeAutomated'),
   dataAvailableType: prefix.mcal('dataAvailableType'),
@@ -91,6 +92,7 @@ export default async function (): Promise<Etl> {
         separator: ',',
         key: '_cfs'
       }),
+      triple('_article', mcal.cf, '_cfs'),
       custom.change({
         key: '_cfs',
         type: 'unknown',
@@ -216,7 +218,7 @@ export default async function (): Promise<Etl> {
           })
         }
       }),
-      triple('_article', mcal.cf, iris(prefix.cf, '_cfs'))
+      triple('_article', mcal.contentFeatureConcept, iris(prefix.cf, '_cfs'))
     ),
     when(
       context => context.getString('contentAnalysisType') != 'NA',
