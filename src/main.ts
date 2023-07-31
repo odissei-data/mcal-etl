@@ -98,7 +98,7 @@ export default async function (): Promise<Etl> {
           return (value as any).map((value:string) => {
             switch(value) { 
               case '?': return 'CF0';
-              case 'actor visibility': return 'CFE54';
+              case 'actor visibility': return 'CFE2';
               case 'age': return 'CFE72';
               case 'anger': return 'CFE8';
               case 'association actors with issues': return 'CFE47';
@@ -107,7 +107,7 @@ export default async function (): Promise<Etl> {
               case 'attention': return 'CFE26';
               case 'authoritativeness': return 'CFE22';
               case 'commercial characteristics': return 'CFE73';
-              case 'concept visibility': return 'CFE58';
+              case 'concept visibility': return 'CFE5';
               case 'conflict framing': return 'CFE65';
               case 'date': return 'CFE11';
               case 'diversity': return 'CFE74';
@@ -125,12 +125,12 @@ export default async function (): Promise<Etl> {
               case 'framing': return 'CFE32';
               case 'generic frame': return 'CFE78';
               case 'generic frames': return 'CFE64'
-              case 'genre': return 'CFE10';
+              case 'genre': return 'CFE4';
               case 'humour relatedness': return 'CFE79';
               case 'identification features': return 'CFE80';
               case 'information availability': return 'CFE30';
               case 'interactivity': return 'CFE81';
-              case 'issue attention': return 'CFE20';
+              case 'issue attention': return 'CFE1';
               case 'issue communication': return 'CFE38';
               case 'issue developments': return 'CFE46';
               case 'issue position': return 'CFE45';
@@ -189,7 +189,7 @@ export default async function (): Promise<Etl> {
               case 'product characteristics': return 'CFE113';
               case 'prominence': return 'CFE21';
               case 'real-world developments': return 'CFE41';
-              case 'sentiment': return 'CFE19';
+              case 'sentiment': return 'CFE3';
               case 'shaming': return 'CFE7';
               case 'sources': return 'CFE9';
               case 'strategy framing': return 'CFE48';
