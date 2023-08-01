@@ -99,7 +99,7 @@ export default async function (): Promise<Etl> {
         change: value => {
           return (value as any).map((value:string) => {
             switch(value) { 
-              case '?': return 'CF0';
+              case '?': return 'CFE0';
               case 'actor visibility': return 'CFE2';
               case 'age': return 'CFE72';
               case 'anger': return 'CFE8';
@@ -168,7 +168,6 @@ export default async function (): Promise<Etl> {
               case 'other: presence of real-time marketing techniques': return 'CFE69';
               case 'other: product placement disclosure appearances': return 'CFE101';
               case 'other: retrieval cues': return 'CFE68';
-              case 'other: retrieval cues': return 'CFE70';
               case 'other: sensationalism in storytelling': return 'CFE102';
               case 'other: sensationalist news features': return 'CFE103';
               case 'other: technology': return 'CFE104';
@@ -186,7 +185,7 @@ export default async function (): Promise<Etl> {
               case 'preclearance policies': return 'CFE109';
               case 'presentation of social roles': return 'CFE36';
               case 'prevention vs. repressive framing': return 'CFE110';
-              case 'primary actor': return 'CFE112';
+              case 'primary actor': return 'CFE111';
               case 'product categories': return 'CFE112';
               case 'product characteristics': return 'CFE113';
               case 'prominence': return 'CFE21';
@@ -213,7 +212,7 @@ export default async function (): Promise<Etl> {
               case 'visual self-presentation': return 'CFE117';
               default:
                 console.error(value); // process.exit(1);
-                return 'CF0'
+                return 'CFE0'
             }
           })
         }
