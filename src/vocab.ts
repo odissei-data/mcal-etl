@@ -20,11 +20,9 @@ const prefix = {
   rqt: declarePrefix(prefix_cv_base('researchQuestionType/v0.1/')),
 }
 
-const graph = {
-  vocabs: prefix.graph('vocabs')
-}
-
 const destination = {
+  defaultGraph: prefix.cf, 
+  opts: {overwrite: true, synchronizeServices: false },
   account: process.env.USER ?? "odissei",
   dataset:
     Etl.environment === environments.Acceptance
@@ -35,7 +33,7 @@ const destination = {
 }
 
 export default async function (): Promise<Etl> {
-  const etl = new Etl({ defaultGraph: graph.vocabs })
+  const etl = new Etl(destination)
     
   etl.use(
     fromXlsx(Source.file(['../mcal-cleaning/Data/MCALSchema.xlsx']), { sheetNames: ['contentFeature']}),
