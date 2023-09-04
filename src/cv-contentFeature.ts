@@ -54,11 +54,15 @@ export default async function (): Promise<Etl> {
         triple('ID', skos.example, 'Example')
       ),
       when('skos:broader',
-        triple('_ID', skos.broader, iri(prefix.cf, 'skos:broader'))
+        triple('_ID', skos.broader, iri(prefix.cf, 'skos:broader')),
+        triple(iri(prefix.cf, 'skos:broader'), skos.narrower, '_ID'),
       ),
+      when('isTopConcept',
+        triple(iri(prefix.cf, ''), skos.hasTopConcept, '_ID')
+      )
     ),
     toTriplyDb(destination),
-    uploadPrefixes(destination)
+    uploadPrefixes(destination),
   )
   await etl.copySource(conceptSchemeDefinition, Destination.TriplyDb.rdf(destination.account, destination.dataset));
   return etl
