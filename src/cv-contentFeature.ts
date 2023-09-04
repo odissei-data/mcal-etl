@@ -30,7 +30,9 @@ export default async function (): Promise<Etl> {
   const etl = new Etl(destination)
     
   etl.use(
-    fromXlsx(Source.file(['../mcal-cleaning/Data/MCALSchema.xlsx']), { sheetNames: ['contentFeature']}),
+    // fromXlsx(Source.file(['../mcal-cleaning/Data/MCALSchema.xlsx']), { sheetNames: ['contentFeature']}),
+    fromXlsx(Source.url('https://docs.google.com/spreadsheets/d/1zB1SFPpz5VDjlrh5LlJqmFXSggqXPODDPGHzLyL-Ef8/export?gid=1646162430')),
+
     logRecord(),
     when('skos:notation',
       addIri({ // Generate IRI for contentFeature skos:Concept:
