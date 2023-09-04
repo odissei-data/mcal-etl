@@ -13,6 +13,8 @@ const prefix = {
 }
 
 const conceptSchemeDefinition = Source.url('https://raw.githubusercontent.com/odissei-data/vocabularies/main/mcal/ContentFeatureScheme.ttl')
+const MCALschema = 'https://docs.google.com/spreadsheets/d/1zB1SFPpz5VDjlrh5LlJqmFXSggqXPODDPGHzLyL-Ef8'
+const contentFeatureTab = Source.url(MCALschema + '/export?gid=1646162430')
 
 const destination = {
   defaultGraph: prefix.cf, 
@@ -31,8 +33,7 @@ export default async function (): Promise<Etl> {
     
   etl.use(
     // fromXlsx(Source.file(['../mcal-cleaning/Data/MCALSchema.xlsx']), { sheetNames: ['contentFeature']}),
-    fromXlsx(Source.url('https://docs.google.com/spreadsheets/d/1zB1SFPpz5VDjlrh5LlJqmFXSggqXPODDPGHzLyL-Ef8/export?gid=1646162430')),
-
+    fromXlsx(contentFeatureTab),
     logRecord(),
     when('skos:notation',
       addIri({ // Generate IRI for contentFeature skos:Concept:
