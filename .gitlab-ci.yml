@@ -77,8 +77,8 @@ main:
   rules:
     - !reference [.etl-template, rules]
 
-### Example stage 2: add another ETL with name "collections"
-collections:
+### Example stage 2: add another ETL with name "cv-contentFeature"
+cv-contentFeature:
   stage: run-etls
   interruptible: true
   cache: !reference [.readOnlyYarnCache]
@@ -88,7 +88,7 @@ collections:
     - !reference [.etl-template, script]
   rules:
     # Make sure you remove this next line if you want to use this stage:
-    - when: never
+    - when: always
     - !reference [.etl-template, rules]
 
 
