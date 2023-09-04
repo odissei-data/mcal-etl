@@ -1,4 +1,4 @@
-import { Etl, Source, declarePrefix, environments, fromXlsx, toTriplyDb, when } from '@triplyetl/etl/generic'
+import { Etl, Source, declarePrefix, Destination, environments, fromXlsx, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
 import { addIri, iri, pairs, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { a, skos } from '@triplyetl/etl/vocab'
@@ -8,17 +8,11 @@ const prefix_base = declarePrefix('https://mcal.odissei.nl/')
 const prefix_cv_base = declarePrefix(prefix_base('cv/'))
 
 const prefix = {
-  orcid: declarePrefix('https://orcid.org/'),
-  issn: declarePrefix('https://portal.issn.org/resource/ISSN/'),
-  journal: declarePrefix(prefix_base('id/j/')),
-  article: declarePrefix(prefix_base('id/a/')),
-  data: declarePrefix(prefix_base('data/')),
-  graph: declarePrefix(prefix_base('graph/')),
   mcal: declarePrefix(prefix_base('schema/')),
-  cat: declarePrefix(prefix_cv_base('contentAnalysisType/v0.1/')),
   cf: declarePrefix(prefix_cv_base('contentFeature/v0.1/')),
-  rqt: declarePrefix(prefix_cv_base('researchQuestionType/v0.1/')),
 }
+
+const conceptSchemeDefinition = Source.url('https://raw.githubusercontent.com/odissei-data/vocabularies/main/mcal/ContentFeatureScheme.ttl')
 
 const destination = {
   defaultGraph: prefix.cf, 
@@ -60,7 +54,9 @@ export default async function (): Promise<Etl> {
         triple('_ID', skos.broader, iri(prefix.cf, 'skos:broader'))
       ),
     ),
-    toTriplyDb(destination)
+    toTriplyDb(destination),
+    uploadPrefixes(destination)
   )
+  await etl.copySource(conceptSchemeDefinition, Destination.TriplyDb.rdf(destination.account, destination.dataset));
   return etl
 }
