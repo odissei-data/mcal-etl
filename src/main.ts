@@ -45,11 +45,8 @@ const mcal = {
   researchQuestionType: prefix.mcal('researchQuestionType')  
 }
 
-const graph = {
-  instances: prefix.graph('mcalentory')
-}
-
 const destination = {
+  defaultGraph: prefix.graph('mcalentory'),
   account: process.env.USER ?? "odissei",
   dataset:
     Etl.environment === environments.Acceptance
@@ -60,7 +57,7 @@ const destination = {
 }
 
 export default async function (): Promise<Etl> {
-  const etl = new Etl({ defaultGraph: graph.instances })
+  const etl = new Etl(destination)
     
   etl.use(
     // fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
