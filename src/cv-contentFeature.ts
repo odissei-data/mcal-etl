@@ -68,6 +68,6 @@ export default async function (): Promise<Etl> {
     uploadPrefixes(destination),
   )
   // add static skos:ConceptScheme triples  to destination
-  await etl.copySource(conceptSchemeDefinition, Destination.TriplyDb.rdf(destination.account, destination.dataset));
+  await etl.copySource(conceptSchemeDefinition, Destination.TriplyDb.rdf(destination.account, destination.dataset))
   return etl
 }
