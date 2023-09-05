@@ -1,4 +1,4 @@
-import { Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, when } from '@triplyetl/etl/generic'
+import { Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
 import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 // import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
@@ -28,8 +28,7 @@ const mcal = {
    */
   comparativeStudy: prefix.mcal('comparativeStudy'),
   contentFeatureConcept: prefix.mcal('contentFeatureConcept'),
-  contentFeature: prefix.mcal('contentFeature'),  // mainly here for debugging contentFeatureConcept
-  cf: prefix.mcal('cf'),                          // mainly here for debugging contentFeatureConcept
+  contentFeature: prefix.mcal('contentFeature'),  // link to skos:Concept version of string in contentFeatureConcept
   contentAnalysisType: prefix.mcal('contentAnalysisType'),
   contentAnalysisTypeAutomated: prefix.mcal('contentAnalysisTypeAutomated'),
   dataAvailableType: prefix.mcal('dataAvailableType'),
@@ -89,7 +88,6 @@ export default async function (): Promise<Etl> {
         separator: ',',
         key: '_cfs'
       }),
-      triple('_article', mcal.cf, '_cfs'),
       custom.change({
         key: '_cfs',
         type: 'unknown',
@@ -363,7 +361,8 @@ export default async function (): Promise<Etl> {
     //loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/"]})),
     //loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/researchQuestionType/v0.1/"]})),
     validate(Source.file('static/model.trig'), {terminateOn:"Violation"}),
-    toTriplyDb(destination)
+    toTriplyDb(destination),
+    uploadPrefixes(destination),
   )
   return etl
 }
