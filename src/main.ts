@@ -47,6 +47,7 @@ const mcal = {
 const destination = {
   defaultGraph: prefix.graph('mcalentory'),
   account: process.env.USER ?? "odissei",
+  prefixes: prefix, 
   dataset:
     Etl.environment === environments.Acceptance
       ? 'mcal-acceptance'

@@ -19,6 +19,7 @@ const contentFeatureTab = Source.url(MCALschema + '/export?gid=1646162430')
 // Declare destination environment at TriplyDB:
 const destination = {
   defaultGraph: prefix.cf, 
+  prefixes: prefix,
   opts: {overwrite: true, synchronizeServices: false },
   account: process.env.USER ?? "odissei",
   dataset:
