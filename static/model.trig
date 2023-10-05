@@ -68,7 +68,7 @@ mcal:model {
     sh:nodeKind sh:IRI ;
     sh:path dct:hasVersion .
 
-  # Optional: Content Anaylsis Type values are based on a small SKOS vocabulary
+  # Optional: Content Analysis Type values are based on a small SKOS vocabulary
   shp:contentAnalysisType
     a sh:PropertyShape ;
     sh:minCount 0;
@@ -76,7 +76,7 @@ mcal:model {
     # sh:class skos:Concept ; # Temp. disabled due to slow down in current ETL
     sh:path mcal:contentAnalysisType .
 
-  # Optional: Content Anaylsis Type values are based on a small SKOS vocabulary
+  # Optional: Research Question Type values are based on a small SKOS vocabulary
   shp:researchQuestionType
     a sh:PropertyShape ;
     sh:minCount 0;
