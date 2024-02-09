@@ -1,4 +1,4 @@
-import { Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
+import { Etl, Source, declarePrefix, environments, fromCsv, loadRdf, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
 import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 // import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
@@ -359,8 +359,10 @@ export default async function (): Promise<Etl> {
       [a, bibo.Journal],
       [dct.title, 'journal']
     ),
-    //loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/"]})),
-    //loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/researchQuestionType/v0.1/"]})),
+    loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/"]})),
+    loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/researchQuestionType/v0.1/"]})),
+    loadRdf(Source.TriplyDb.rdf('odissei','mcal',{graphs: ["https://mcal.odissei.nl/cv/contentFeature/v0.1/"]})),
+
     validate(Source.file('static/model.trig'), {terminateOn:"Violation"}),
     toTriplyDb(destination),
     uploadPrefixes(destination),
