@@ -20,7 +20,7 @@ const prefix = {
 const cbs_zotero_bib = 'https://docs.google.com/spreadsheets/d/1JDjvKf3sf60e9_8v-ef0IkyCNxA9y0jlLuCBkcbM-fs/export?gid=1386315381'
 
 const destination = {
-  defaultGraph: prefix.graph('odissei_kg'),
+  defaultGraph: prefix.graph('papers'),
   account: process.env.USER ?? "odissei",
   prefixes: prefix, 
   dataset:
