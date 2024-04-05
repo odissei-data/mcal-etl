@@ -1,5 +1,5 @@
 import {Etl, Source, declarePrefix, environments, when, toTriplyDb, uploadPrefixes, fromCsv } from '@triplyetl/etl/generic'
-import { addIri, iri, str, triple } from '@triplyetl/etl/ratt'
+import { addIri, iri, iris, split, str, triple } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, a, dct, dcm } from '@triplyetl/etl/vocab' // dct
@@ -62,8 +62,16 @@ export default async function (): Promise<Etl> {
       ),
       when('ShortTitle',
         triple('_IRI', bibo.shortTitle, 'ShortTitle')
-      )
-
+      ),
+      when(
+        context => context.getString('orcid') != 'NA',
+        split({
+          content: 'orcid',
+          separator: ',',
+          key: '_orcids'
+        }),
+        triple('_IRI', dct.creator, iris('_orcids'))
+      ),
     ),
     //validate(Source.file('static/model.trig'), {terminateOn:"Violation"}),
     toTriplyDb(destination),
