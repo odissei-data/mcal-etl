@@ -65,8 +65,11 @@ export default async function (): Promise<Etl> {
         when('Instelling',
              triple('_IRI', iri(prefix.odissei_kg_schema, str('instelling')), iri(prefix.cbs_project, 'Instelling'))
         ),
+        when('Startdatum',
+            triple('_IRI', iri(prefix.odissei_kg_schema, str('startDate')), 'Startdatum')
+        ),
         when('Einddatum',
-            triple('_IRI', iri(prefix.odissei_kg_schema, str('enddate')), 'Einddatum')
+            triple('_IRI', iri(prefix.odissei_kg_schema, str('endDate')), 'Einddatum')
         )
     
       ),
