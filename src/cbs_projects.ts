@@ -15,7 +15,8 @@ const prefix = {
   cbs_project: declarePrefix(prefix_base('cbs/project/')),
   doi: declarePrefix('https://doi.org/'),
   orcid: declarePrefix('https://orcid.org/'),
-  issn: declarePrefix('https://portal.issn.org/resource/ISSN/')
+  issn: declarePrefix('https://portal.issn.org/resource/ISSN/'),
+  foaf: declarePrefix('http://xmlns.com/foaf/0.1/')
 }
 
 const cbs_projects = 'https://www.cbs.nl/-/media/cbs-op-maat/zelf-onderzoek-doen/projecten_met_bestanden_einddatum_voor_2024.xlsx'
@@ -61,6 +62,13 @@ export default async function (): Promise<Etl> {
         when('Bestandsnaam',
             triple('_IRI', iri(prefix.odissei_kg_schema, str('bestandsnaam')), iri(prefix.cbs_project, 'Bestandsnaam'))
         ),
+        when('Instelling',
+             triple('_IRI', iri(prefix.odissei_kg_schema, str('instelling')), iri(prefix.cbs_project, 'Instelling'))
+        ),
+        when('Einddatum',
+            triple('_IRI', iri(prefix.odissei_kg_schema, str('enddate')), 'Einddatum')
+        )
+    
       ),
     
 
