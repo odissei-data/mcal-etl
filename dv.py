@@ -28,6 +28,7 @@ if __name__ == '__main__':
   # delete_disk_caches_for_function('get_dataset')
   with open(outputfile, 'w', encoding="utf-8") as f:
     dv_list = get_datasets()
+    f.write('DOI, alternativeTitle\n')
     for r in dv_list['data']:
       doi = r['persistentUrl']
       metadata = get_dataset(doi) 
