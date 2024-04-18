@@ -28,16 +28,19 @@ if __name__ == '__main__':
   # delete_disk_caches_for_function('get_dataset')
   with open(outputfile, 'w', encoding="utf-8") as f:
     dv_list = get_datasets()
-    f.write('DOI, alternativeTitle\n')
+    f.write('DOI, alternativeTitle, publicationDate\n')
     for r in dv_list['data']:
       doi = r['persistentUrl']
+      publicationDate = r['publicationDate']
       metadata = get_dataset(doi) 
       try: 
         for field in metadata['datasetVersion']['metadataBlocks']['citation']['fields']:
           if field['typeName'] == 'alternativeTitle':
             altTitle = field['value'][0]
-            f.write(f'{doi}, "{altTitle}"\n')
-            print(f'{doi}, "{altTitle}"')
+            altTitle = altTitle.translate({91:95, 93:95})
+            resultString = f'{doi}, "{altTitle}", "{publicationDate}"\n'
+            f.write(resultString)
+            print(resultString) # debug only
       except KeyError:
         print(f"Oops {metadata}")
   print(f"Results written to {outputfile}")

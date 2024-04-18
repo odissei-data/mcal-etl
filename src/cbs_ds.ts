@@ -1,8 +1,8 @@
 import {Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes } from '@triplyetl/etl/generic'
-import { iri, triple } from '@triplyetl/etl/ratt'
+import { iri, pairs } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
-import { bibo } from '@triplyetl/etl/vocab'
+import { bibo, dct } from '@triplyetl/etl/vocab'
 
 // import { validate } from '@triplyetl/etl/shacl'
 
@@ -38,7 +38,11 @@ export default async function (): Promise<Etl> {
     //fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'cbs.csv'})),
     fromCsv(Source.file('cbs.csv')),
     logRecord(),
-    triple('DOI', bibo.shortTitle, iri(prefix.cbs_project,"alternativeTitle")),
+    pairs('DOI', 
+      [bibo.shortTitle, iri(prefix.cbs_project,"alternativeTitle")],
+      [dct.date, "publicationDate"]
+    ),
+
     toTriplyDb(destination),
     uploadPrefixes(destination),
   )
