@@ -35,8 +35,9 @@ if __name__ == '__main__':
       try: 
         for field in metadata['datasetVersion']['metadataBlocks']['citation']['fields']:
           if field['typeName'] == 'alternativeTitle':
-            f.write(f'{doi}, "{field['value'][0]}"\n')
-            print(f'{doi}, "{field['value'][0]}"')
+            altTitle = field['value'][0]
+            f.write(f'{doi}, "{altTitle}"\n')
+            print(f'{doi}, "{altTitle}"')
       except KeyError:
         print(f"Oops {metadata}")
   print(f"Results written to {outputfile}")
