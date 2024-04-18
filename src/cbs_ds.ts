@@ -1,7 +1,9 @@
 import {Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes } from '@triplyetl/etl/generic'
+import { iri, triple } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
-// import { bibo, dct, a } from '@triplyetl/etl/vocab'
+import { bibo } from '@triplyetl/etl/vocab'
+
 // import { validate } from '@triplyetl/etl/shacl'
 
 // Declare prefixes.
@@ -33,9 +35,10 @@ const destination = {
 export default async function (): Promise<Etl> {
   const etl = new Etl(destination)
   etl.use(
-    fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'cbs.csv'})),
+    //fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'cbs.csv'})),
+    fromCsv(Source.file('cbs.csv')),
     logRecord(),
-    
+    triple('DOI', bibo.shortTitle, iri(prefix.cbs_project,"alternativeTitle")),
     toTriplyDb(destination),
     uploadPrefixes(destination),
   )
