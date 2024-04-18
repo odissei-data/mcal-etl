@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# Get mapping from CBS data design DOI to "Alternative Title" from 
+# the dataverse API and write results to two column CSV.
+# To prevent overloading the dataverse instance during development,
+# API results are cached to disk for 3 days.
+
 import requests
 import json
 
@@ -28,9 +34,8 @@ if __name__ == '__main__':
       try: 
         for field in metadata['datasetVersion']['metadataBlocks']['citation']['fields']:
           if field['typeName'] == 'alternativeTitle':
-            f.write(f"{doi}, '{field['value'][0]}'\n")
-            print(f"{doi}, '{field['value'][0]}'")
+            f.write(f'{doi}, "{field['value'][0]}"\n')
+            print(f'{doi}, "{field['value'][0]}"')
       except KeyError:
         print(f"Oops {metadata}")
-
   print(f"Results written to {outputfile}")
