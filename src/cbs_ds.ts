@@ -1,5 +1,5 @@
-import {Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes } from '@triplyetl/etl/generic'
-import { iri, pairs } from '@triplyetl/etl/ratt'
+import {Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
+import {iri, iris, objects, pairs, split } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct } from '@triplyetl/etl/vocab'
@@ -42,7 +42,14 @@ export default async function (): Promise<Etl> {
       [bibo.shortTitle, iri(prefix.cbs_project,"alternativeTitle")],
       [dct.date, "publicationDate"]
     ),
-
+    when('relatedSkosConcepts',
+      split({
+        content: 'relatedSkosConcepts',
+        separator: ' ',
+        key: '_relatedSkosConcepts'
+      }),
+      objects('DOI', dct.subject, iris('_relatedSkosConcepts'))
+    ),
     toTriplyDb(destination),
     uploadPrefixes(destination),
   )
