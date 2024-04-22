@@ -19,7 +19,10 @@ const prefix = {
   foaf: declarePrefix('http://xmlns.com/foaf/0.1/')
 }
 
-const cbs_projects = 'https://www.cbs.nl/-/media/cbs-op-maat/zelf-onderzoek-doen/projecten_met_bestanden_einddatum_voor_2024.xlsx'
+// ETL input data: spreadsheets with CBS project information taken from HTML overview page at:
+// https://www.cbs.nl/nl-nl/onze-diensten/maatwerk-en-microdata/microdata-zelf-onderzoek-doen/instellingen-en-projecten
+const cbs_projects_before = 'https://www.cbs.nl/-/media/cbs-op-maat/zelf-onderzoek-doen/projecten_met_bestanden_einddatum_voor_2024.xlsx'
+const cbs_projects_after = 'https://www.cbs.nl/-/media/cbs-op-maat/zelf-onderzoek-doen/projecten_met_bestanden_einddatum_na_2023.xlsx'
 
 const destination = {
   defaultGraph: prefix.graph('projects'),
@@ -46,7 +49,7 @@ export default async function (): Promise<Etl> {
   // const cat_quads =await getRdf("https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/")
   
   etl.use(
-    fromXlsx(Source.url(cbs_projects)),
+    fromXlsx([Source.url(cbs_projects_before), Source.url(cbs_projects_after)]),
     logRecord(),
     
 
