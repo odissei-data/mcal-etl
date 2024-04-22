@@ -13,7 +13,7 @@ const prefix = {
   graph: declarePrefix(prefix_base('graph/')),
   odissei_kg_schema: declarePrefix(prefix_base('schema/')),
   codelib: declarePrefix(prefix_base('cbs_codelib/')),
-  cbs_project: declarePrefix(prefix_base('cbs/project/')),
+  cbs_ds: declarePrefix(prefix_base('cbs/dataset/')),
   doi: declarePrefix('https://doi.org/'),
   orcid: declarePrefix('https://orcid.org/'),
   issn: declarePrefix('https://portal.issn.org/resource/ISSN/'),
@@ -39,7 +39,7 @@ export default async function (): Promise<Etl> {
     fromCsv(Source.file('cbs.csv')),
     logRecord(),
     pairs('DOI', 
-      [bibo.shortTitle, iri(prefix.cbs_project,"alternativeTitle")],
+      [bibo.shortTitle, iri(prefix.cbs_ds,"alternativeTitle")],
       [dct.date, "publicationDate"]
     ),
     when('relatedSkosConcepts',
