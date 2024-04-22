@@ -1,8 +1,8 @@
 import {Etl, Source, declarePrefix, environments, when, toTriplyDb, uploadPrefixes, fromXlsx } from '@triplyetl/etl/generic'
 import { addIri, iri, str, triple } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
-import { logRecord } from '@triplyetl/etl/debug'
-//import { bibo, a, dct, dcm } from '@triplyetl/etl/vocab' // dct
+// import { logRecord } from '@triplyetl/etl/debug'
+// import { bibo, a, dct, dcm } from '@triplyetl/etl/vocab' // dct
 // import { validate } from '@triplyetl/etl/shacl'
 
 // Declare prefixes.
@@ -12,7 +12,9 @@ const prefix = {
   graph: declarePrefix(prefix_base('graph/')),
   odissei_kg_schema: declarePrefix(prefix_base('schema/')),
   codelib: declarePrefix(prefix_base('cbs_codelib/')),
-  cbs_project: declarePrefix(prefix_base('cbs/project/')),
+  cbs_pr: declarePrefix(prefix_base('cbs/project/')),
+  cbs_organisation: declarePrefix(prefix_base('cbs/organisation/')),
+  cbs_dataset: declarePrefix(prefix_base('cbs/dataset/')),
   doi: declarePrefix('https://doi.org/'),
   orcid: declarePrefix('https://orcid.org/'),
   issn: declarePrefix('https://portal.issn.org/resource/ISSN/'),
@@ -50,23 +52,18 @@ export default async function (): Promise<Etl> {
   
   etl.use(
     fromXlsx([Source.url(cbs_projects_before), Source.url(cbs_projects_after)]),
-    logRecord(),
-    
-
-
-
     
     when('Projectnummer',
         addIri({ // Generate IRI for article, use DOI for now
             content: 'Projectnummer',
-            prefix: prefix.cbs_project,
+            prefix: prefix.cbs_pr,
             key: '_IRI'
         }),
         when('Bestandsnaam',
-            triple('_IRI', iri(prefix.odissei_kg_schema, str('bestandsnaam')), iri(prefix.cbs_project, 'Bestandsnaam'))
+            triple('_IRI', iri(prefix.odissei_kg_schema, str('bestandsnaam')), iri(prefix.cbs_dataset, 'Bestandsnaam'))
         ),
         when('Instelling',
-             triple('_IRI', iri(prefix.odissei_kg_schema, str('instelling')), iri(prefix.cbs_project, 'Instelling'))
+             triple('_IRI', iri(prefix.odissei_kg_schema, str('instelling')), iri(prefix.cbs_organisation, 'Instelling'))
         ),
         when('Startdatum',
             triple('_IRI', iri(prefix.odissei_kg_schema, str('startDate')), 'Startdatum')
