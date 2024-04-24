@@ -1,8 +1,8 @@
-import {Etl, Source, declarePrefix, environments, when, toTriplyDb, uploadPrefixes, fromXlsx } from '@triplyetl/etl/generic'
-import { addIri, iri, str, triple } from '@triplyetl/etl/ratt'
+import {Etl, Source, declarePrefix, environments, when, toTriplyDb, uploadPrefixes, fromXlsx  } from '@triplyetl/etl/generic'
+import { addIri, custom, iri, str, triple } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
-// import { logRecord } from '@triplyetl/etl/debug'
-// import { bibo, a, dct, dcm } from '@triplyetl/etl/vocab' // dct
+ //import { logRecord } from '@triplyetl/etl/debug'
+ //import { xsd } from '@triplyetl/etl/vocab' // dct
 // import { validate } from '@triplyetl/etl/shacl'
 
 // Declare prefixes.
@@ -53,6 +53,9 @@ export default async function (): Promise<Etl> {
   etl.use(
     fromXlsx([Source.url(cbs_projects_before), Source.url(cbs_projects_after)]),
     
+    
+  
+    
     when('Projectnummer',
         addIri({ // Generate IRI for article, use DOI for now
             content: 'Projectnummer',
@@ -65,10 +68,20 @@ export default async function (): Promise<Etl> {
         when('Instelling',
              triple('_IRI', iri(prefix.odissei_kg_schema, str('instelling')), iri(prefix.cbs_organisation, 'Instelling'))
         ),
-        when('Startdatum',
+         when('Startdatum',
+            custom.change({
+              change: value => new Date((value - 25569)*86400*1000),
+              type: 'number',
+              key: 'Startdatum',
+            }),
             triple('_IRI', iri(prefix.odissei_kg_schema, str('startDate')), 'Startdatum')
         ),
         when('Einddatum',
+            custom.change({
+              change: value => new Date((value - 25569)*86400*1000),
+              type: 'number',
+              key: 'Einddatum',
+            }),
             triple('_IRI', iri(prefix.odissei_kg_schema, str('endDate')), 'Einddatum')
         )
     
@@ -82,3 +95,4 @@ export default async function (): Promise<Etl> {
   )
   return etl
 }
+
