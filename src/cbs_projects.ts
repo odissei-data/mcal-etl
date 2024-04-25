@@ -52,10 +52,6 @@ export default async function (): Promise<Etl> {
   
   etl.use(
     fromXlsx([Source.url(cbs_projects_before), Source.url(cbs_projects_after)]),
-    
-    
-  
-    
     when('Projectnummer',
         addIri({ // Generate IRI for article, use DOI for now
             content: 'Projectnummer',
@@ -84,11 +80,7 @@ export default async function (): Promise<Etl> {
             }),
             triple('_IRI', iri(prefix.odissei_kg_schema, str('endDate')), 'Einddatum')
         )
-    
       ),
-    
-
-    
     //validate(Source.file('static/model.trig'), {terminateOn:"Violation"}),
     toTriplyDb(destination),
     uploadPrefixes(destination),
