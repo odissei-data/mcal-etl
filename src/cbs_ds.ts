@@ -1,8 +1,8 @@
 import {Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
-import {iri, iris, objects, pairs, split } from '@triplyetl/etl/ratt'
+import {literal, iri, iris, objects, pairs, split } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
-import { bibo, dct } from '@triplyetl/etl/vocab'
+import { bibo, dct, xsd } from '@triplyetl/etl/vocab'
 
 // import { validate } from '@triplyetl/etl/shacl'
 
@@ -40,7 +40,7 @@ export default async function (): Promise<Etl> {
     logRecord(),
     pairs('DOI', 
       [bibo.shortTitle, iri(prefix.cbs_ds,"alternativeTitle")],
-      [dct.date, "publicationDate"]
+      [dct.date, literal('publicationDate', xsd.date)]
     ),
     when('relatedSkosConcepts',
       split({
