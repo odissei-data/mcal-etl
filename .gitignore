@@ -27,3 +27,4 @@ report.ttl.gz
 # etl error logs
 etl.err
 etl.traceError*
+cbs.csv
