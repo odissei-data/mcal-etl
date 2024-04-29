@@ -43,14 +43,11 @@ def main(args):
       metadata = get_dataset(doi) 
       concepts = ''
       try:
-        for complexValue in metadata['datasetVersion']['metadataBlocks']['enrichments']['fields'][0]['value']:
-          for field in complexValue.values():
-            if field['typeName'] == 'vocabVarUri1':
-              if concepts:
-                concepts = concepts + f' {field['value']}'
-              else:
-                concepts = field['value']
-      except AttributeError:
+        for complexTerm in metadata['datasetVersion']['metadataBlocks']['enrichments']['fields'][0]['value']:
+          conceptx = complexTerm['vocabVarUri1']
+          concept = conceptx['value']
+          concepts += f'{concept} '
+      except TypeError:
         logger.warning(f'No SKOS vocabulary enrichments for {doi}')
       except KeyError:
         logger.warning(f'No enrichments for {doi}')
