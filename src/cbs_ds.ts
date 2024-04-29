@@ -1,8 +1,8 @@
 import {Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
-import {literal, iri, iris, objects, pairs, split } from '@triplyetl/etl/ratt'
+import {literal, iri, iris, objects, pairs, split, triple } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 import { logRecord } from '@triplyetl/etl/debug'
-import { bibo, dct, xsd } from '@triplyetl/etl/vocab'
+import { bibo, dcat, dct, xsd } from '@triplyetl/etl/vocab'
 
 // import { validate } from '@triplyetl/etl/shacl'
 
@@ -42,6 +42,11 @@ export default async function (): Promise<Etl> {
       [bibo.shortTitle, iri(prefix.cbs_ds,"alternativeTitle")],
       [dct.date, literal('publicationDate', xsd.date)]
     ),
+    // FIXME: these triples need to be in a blank node of type dct:PeriodOfTime.
+    // See example in https://www.w3.org/TR/vocab-dcat-2/#time-and-space
+    when('validFrom', triple('DOI', dcat.startDate, literal('validFrom', xsd.date))),
+    when('validTill', triple('DOI', dcat.endDate,   literal('validTill', xsd.date))),
+    
     when('relatedSkosConcepts',
       split({
         content: 'relatedSkosConcepts',
