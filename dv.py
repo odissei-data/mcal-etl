@@ -36,7 +36,7 @@ def main(args):
   # delete_disk_caches_for_function('get_dataset')
   with open(outputfile, 'w', encoding="utf-8") as f:
     dv_list = get_datasets()
-    f.write('alternativeTitle, publicationDate, DOI, relatedSkosConcepts\n')
+    f.write('alternativeTitle, publicationDate, DOI, validFrom, validTill, relatedSkosConcepts\n')
     for r in dv_list['data']:
       doi = r['persistentUrl']
       publicationDate = r['publicationDate']
@@ -61,7 +61,17 @@ def main(args):
       except KeyError:
         logger.error(f"Oops {metadata}")
 
-      resultString = f'"{altTitle}", "{publicationDate}", "{doi}", "{concepts}"\n'
+      valid={'from':'', 'till':''}
+      try:
+        for field in metadata['datasetVersion']['metadataBlocks']['CBSMetadata']['fields']:
+          if field['typeName'] == 'GeldigVanaf':
+            valid['from'] = field['value']
+          if field['typeName'] == 'GeldigTot':
+            valid['till'] = field['value']
+      except KeyError:
+          logger.warning('No CBS metadata for {doi}')
+
+      resultString = f'"{altTitle}", "{publicationDate}", "{doi}", "{valid['from']}", "{valid['till']}", "{concepts}"\n'
       f.write(resultString)
       logger.debug(resultString)
     print(f"Results written to {outputfile}")
