@@ -2,9 +2,9 @@
 # Get metadata from CBS data designs from the dataverse API and write results to CSV.
 # To prevent overloading the dataverse instance during development, API results are 
 # cached to disk for 3 days. This script can simply be called by:
-#   ./dv.py 
+#   ./dv2csv.py 
 # or, alternatively
-#   ./dv.py --loglevel ERROR 
+#   ./dv2csv.py --loglevel ERROR 
 # or any other of the standard python log levels (defaults to INFO).
 # In the current version for each dataset we collect for each dataset:
 #   alternativeTitle, publicationDate, DOI, validFrom date, 
