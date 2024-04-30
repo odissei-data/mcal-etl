@@ -49,7 +49,7 @@ export default async function (): Promise<Etl> {
     logRecord(),
     
     when('code',
-      addIri({ // Generate IRI for article, use DOI for now
+      addIri({ // Generate IRI for article, use DOI, OSF or github link in code field
         content: 'code',
         key: '_IRI'
       }),
