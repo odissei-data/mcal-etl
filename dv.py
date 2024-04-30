@@ -4,6 +4,7 @@
 # To prevent overloading the dataverse instance during development,
 # API results are cached to disk for 3 days.
 
+from argparse import ArgumentParser
 import json
 import logging
 import requests
@@ -14,8 +15,8 @@ from cache_to_disk import cache_to_disk, delete_disk_caches_for_function
 PORTAL='https://portal.odissei.nl'
 outputfile='cbs.csv'
 
+logging.basicConfig(encoding='utf-8', level=logging.INFO)
 logger = logging.getLogger(__name__)
-logging.basicConfig(encoding='utf-8', level=logging.ERROR)
 
 @cache_to_disk(3)
 def get_datasets():
@@ -31,9 +32,7 @@ def get_dataset(doi):
   ds_record = requests.get(uri)
   return json.loads(ds_record.content)
 
-def main(args):
-  # delete_disk_caches_for_function('get_datasets')
-  # delete_disk_caches_for_function('get_dataset')
+def dataverse2csv():
   with open(outputfile, 'w', encoding="utf-8") as f:
     dv_list = get_datasets()
     f.write('alternativeTitle, publicationDate, DOI, validFrom, validTill, relatedSkosConcepts\n')
@@ -75,6 +74,16 @@ def main(args):
       f.write(resultString)
       logger.debug(resultString)
     print(f"Results written to {outputfile}")
+
+def main(args):
+  # delete_disk_caches_for_function('get_datasets')
+  # delete_disk_caches_for_function('get_dataset')
+  parser = ArgumentParser()
+  parser.add_argument("-log", "--loglevel", help="Python standard loglevel (defaults to info)", default='info')
+  args = parser.parse_args()
+  logger.setLevel(args.loglevel.upper())
+  
+  dataverse2csv()
 
 if __name__ == '__main__':
   main(sys.argv[1:])
