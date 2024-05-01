@@ -68,6 +68,18 @@ def get_alt_title(doi, metadata):
     logger.error(f"Oops no alt title found in {metadata}")
   return altTitle
 
+def get_valid_dates(doi, metadata):
+  valid={'from':'', 'till':''}
+  try:
+    for field in metadata['datasetVersion']['metadataBlocks']['CBSMetadata']['fields']:
+      if field['typeName'] == 'GeldigVanaf':
+        valid['from'] = field['value']
+      if field['typeName'] == 'GeldigTot':
+        valid['till'] = field['value']
+  except KeyError:
+    logger.warning('No CBS metadata for {doi}')
+  return valid
+
 def dataverse2csv():
   """Loop over all datasets and write selected metadata to CSV."""
   with open(outputfile, 'w', encoding="utf-8") as f:
@@ -79,17 +91,8 @@ def dataverse2csv():
       metadata = get_dataset(doi) 
       concepts = get_skos_concepts(doi, metadata)
       altTitle = get_alt_title(doi, metadata)
+      valid = get_valid_dates(doi, metadata)
       
-      valid={'from':'', 'till':''}
-      try:
-        for field in metadata['datasetVersion']['metadataBlocks']['CBSMetadata']['fields']:
-          if field['typeName'] == 'GeldigVanaf':
-            valid['from'] = field['value']
-          if field['typeName'] == 'GeldigTot':
-            valid['till'] = field['value']
-      except KeyError:
-          logger.warning('No CBS metadata for {doi}')
-
       resultString = f'"{altTitle}", "{publicationDate}", "{doi}", "{valid['from']}", "{valid['till']}", "{concepts}"\n'
       f.write(resultString)
       logger.debug(resultString)
