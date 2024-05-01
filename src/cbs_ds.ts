@@ -63,11 +63,7 @@ export default async function (): Promise<Etl> {
         [dcat.startDate, 'validFrom'], 
         [dcat.endDate,   'validTill'])
     ),
-    // FIXME: these triples need to be in a blank node of type dct:PeriodOfTime.
-    // See example in https://www.w3.org/TR/vocab-dcat-2/#time-and-space
-    // when('validFrom', triple('DOI', dcat.startDate, literal('validFrom', xsd.date))),
-    // when('validTill', triple('DOI', dcat.endDate,   literal('validTill', xsd.date))),
-    
+  
     when('relatedSkosConcepts',
       split({
         content: 'relatedSkosConcepts',
