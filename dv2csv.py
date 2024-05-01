@@ -8,7 +8,9 @@
 # or any other of the standard python log levels (defaults to INFO).
 # In the current version for each dataset we collect for each dataset:
 #   alternativeTitle, publicationDate, DOI, validFrom date, 
-#   validTill date, relatedSkosConcepts
+#   validTill date.
+# In addition, we include space-separated lists to the 
+# URIs of the cbsVariables and relatedSkosConcepts
 
 from argparse import ArgumentParser
 import json
@@ -77,14 +79,24 @@ def get_valid_dates(doi, metadata):
       if field['typeName'] == 'GeldigTot':
         valid['till'] = field['value']
   except KeyError:
-    logger.warning('No CBS metadata for {doi}')
+    logger.warning(f'No CBS metadata for {doi}')
   return valid
+
+def get_variables(doi, metadata):
+  variables = { 'odisseiVariableVocabularyURI':''}
+  try:
+    for var in metadata['datasetVersion']['metadataBlocks']['variableInformation']['fields'][0]["value"]:
+      if 'odisseiVariableVocabularyURI' in var: 
+        variables['odisseiVariableVocabularyURI'] += f"{var['odisseiVariableVocabularyURI']['value']} "
+  except KeyError:
+    logger.warning(f'No variable uri metadata for {doi}')
+  return variables
 
 def dataverse2csv():
   """Loop over all datasets and write selected metadata to CSV."""
   with open(outputfile, 'w', encoding="utf-8") as f:
     dv_list = get_datasets()
-    f.write('alternativeTitle, publicationDate, DOI, validFrom, validTill, relatedSkosConcepts\n')
+    f.write('alternativeTitle, publicationDate, DOI, validFrom, validTill, variables, relatedSkosConcepts\n')
     for r in dv_list['data']:
       doi = r['persistentUrl']
       publicationDate = r['publicationDate']
@@ -92,8 +104,9 @@ def dataverse2csv():
       concepts = get_skos_concepts(doi, metadata)
       altTitle = get_alt_title(doi, metadata)
       valid = get_valid_dates(doi, metadata)
+      vars = get_variables(doi, metadata)
       
-      resultString = f'"{altTitle}", "{publicationDate}", "{doi}", "{valid['from']}", "{valid['till']}", "{concepts}"\n'
+      resultString = f'"{altTitle}", "{publicationDate}", "{doi}", "{valid['from']}", "{valid['till']}", "{vars['odisseiVariableVocabularyURI']}", "{concepts}"\n'
       f.write(resultString)
       logger.debug(resultString)
     print(f"Results written to {outputfile}")
