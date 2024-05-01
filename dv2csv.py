@@ -56,6 +56,18 @@ def get_skos_concepts(doi, metadata):
     logger.warning(f'No enrichments for {doi}')
   return concepts
 
+
+def get_alt_title(doi, metadata):
+  altTitle=''
+  try: 
+    for field in metadata['datasetVersion']['metadataBlocks']['citation']['fields']:
+      if field['typeName'] == 'alternativeTitle':
+        altTitle = field['value'][0]
+        altTitle = altTitle.translate({91:95, 93:95})
+  except KeyError:
+    logger.error(f"Oops no alt title found in {metadata}")
+  return altTitle
+
 def dataverse2csv():
   """Loop over all datasets and write selected metadata to CSV."""
   with open(outputfile, 'w', encoding="utf-8") as f:
@@ -66,7 +78,7 @@ def dataverse2csv():
       publicationDate = r['publicationDate']
       metadata = get_dataset(doi) 
       concepts = get_skos_concepts(doi, metadata)
-  
+      altTitle = get_alt_title(doi, metadata)
       altTitle=''
       try: 
         for field in metadata['datasetVersion']['metadataBlocks']['citation']['fields']:
