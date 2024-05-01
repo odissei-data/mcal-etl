@@ -49,8 +49,9 @@ export default async function (): Promise<Etl> {
       key: '_DOItemporal'
     }),
     triple('DOI', a, iri(prefix.dsv, str('Dataset'))),
-    triple('DOI', iri(prefix.dsv, str('datasetSchema')), iri('_DOIschema')),
     triple('_DOIschema', a, iri(prefix.dsv, str('DatasetSchema'))),
+    triple('_DOItemporal', a, dct.PeriodOfTime),
+    triple('DOI', iri(prefix.dsv, str('datasetSchema')), iri('_DOIschema')),
 
     pairs('DOI', 
       [bibo.shortTitle, iri(prefix.cbs_ds,"alternativeTitle")],
