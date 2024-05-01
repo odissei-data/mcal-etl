@@ -43,6 +43,19 @@ def get_dataset(doi):
   ds_record = requests.get(uri)
   return json.loads(ds_record.content)
 
+def get_skos_concepts(doi, metadata):
+  concepts = ''
+  try:
+    for complexTerm in metadata['datasetVersion']['metadataBlocks']['enrichments']['fields'][0]['value']:
+      conceptx = complexTerm['vocabVarUri1']
+      concept = conceptx['value']
+      concepts += f'{concept} '
+  except TypeError:
+    logger.warning(f'No SKOS vocabulary enrichments for {doi}')
+  except KeyError:
+    logger.warning(f'No enrichments for {doi}')
+  return concepts
+
 def dataverse2csv():
   """Loop over all datasets and write selected metadata to CSV."""
   with open(outputfile, 'w', encoding="utf-8") as f:
@@ -52,17 +65,8 @@ def dataverse2csv():
       doi = r['persistentUrl']
       publicationDate = r['publicationDate']
       metadata = get_dataset(doi) 
-      concepts = ''
-      try:
-        for complexTerm in metadata['datasetVersion']['metadataBlocks']['enrichments']['fields'][0]['value']:
-          conceptx = complexTerm['vocabVarUri1']
-          concept = conceptx['value']
-          concepts += f'{concept} '
-      except TypeError:
-        logger.warning(f'No SKOS vocabulary enrichments for {doi}')
-      except KeyError:
-        logger.warning(f'No enrichments for {doi}')
-
+      concepts = get_skos_concepts(doi, metadata)
+  
       altTitle=''
       try: 
         for field in metadata['datasetVersion']['metadataBlocks']['citation']['fields']:
