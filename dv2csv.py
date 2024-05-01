@@ -79,15 +79,7 @@ def dataverse2csv():
       metadata = get_dataset(doi) 
       concepts = get_skos_concepts(doi, metadata)
       altTitle = get_alt_title(doi, metadata)
-      altTitle=''
-      try: 
-        for field in metadata['datasetVersion']['metadataBlocks']['citation']['fields']:
-          if field['typeName'] == 'alternativeTitle':
-            altTitle = field['value'][0]
-            altTitle = altTitle.translate({91:95, 93:95})
-      except KeyError:
-        logger.error(f"Oops {metadata}")
-
+      
       valid={'from':'', 'till':''}
       try:
         for field in metadata['datasetVersion']['metadataBlocks']['CBSMetadata']['fields']:
