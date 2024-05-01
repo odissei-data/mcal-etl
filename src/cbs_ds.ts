@@ -1,8 +1,8 @@
 import {Etl, Source, declarePrefix, environments, fromCsv, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
-import {literal, iri, iris, objects, pairs, split, triple } from '@triplyetl/etl/ratt'
+import {addHashedIri, literal, iri, iris, objects, pairs, split, str, triple, nestedPairs } from '@triplyetl/etl/ratt'
 // import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
-import { logRecord } from '@triplyetl/etl/debug'
-import { bibo, dcat, dct, xsd } from '@triplyetl/etl/vocab'
+// import { logRecord } from '@triplyetl/etl/debug'
+import { bibo, dcat, dct, a, xsd } from '@triplyetl/etl/vocab'
 
 // import { validate } from '@triplyetl/etl/shacl'
 
@@ -11,6 +11,7 @@ const prefix_base = declarePrefix('https://kg.odissei.nl/')
 
 const prefix = {
   graph: declarePrefix(prefix_base('graph/')),
+  dsv: declarePrefix('https://w3id.org/dsv-ontology#'),
   odissei_kg_schema: declarePrefix(prefix_base('schema/')),
   codelib: declarePrefix(prefix_base('cbs_codelib/')),
   cbs_ds: declarePrefix(prefix_base('cbs/dataset/')),
@@ -35,17 +36,36 @@ const destination = {
 export default async function (): Promise<Etl> {
   const etl = new Etl(destination)
   etl.use(
-    //fromCsv(Source.TriplyDb.asset(destination.account, destination.dataset, {name: 'cbs.csv'})),
     fromCsv(Source.file('cbs.csv')),
-    logRecord(),
+    //logRecord(),
+    addHashedIri({
+      prefix: prefix.odissei_kg_schema,
+      content: ['DOI', str('schema')],
+      key: '_DOIschema'
+    }),
+    addHashedIri({
+      prefix: prefix.odissei_kg_schema,
+      content: ['DOI', str('temporal')],
+      key: '_DOItemporal'
+    }),
+    triple('DOI', a, iri(prefix.dsv, str('Dataset'))),
+    triple('DOI', iri(prefix.dsv, str('datasetSchema')), iri('_DOIschema')),
+    triple('_DOIschema', a, iri(prefix.dsv, str('DatasetSchema'))),
+
     pairs('DOI', 
       [bibo.shortTitle, iri(prefix.cbs_ds,"alternativeTitle")],
       [dct.date, literal('publicationDate', xsd.date)]
     ),
+
+    when('validTill', 
+      nestedPairs(iri('DOI'), dct.temporal, iri('_DOItemporal'), 
+        [dcat.startDate, 'validFrom'], 
+        [dcat.endDate,   'validTill'])
+    ),
     // FIXME: these triples need to be in a blank node of type dct:PeriodOfTime.
     // See example in https://www.w3.org/TR/vocab-dcat-2/#time-and-space
-    when('validFrom', triple('DOI', dcat.startDate, literal('validFrom', xsd.date))),
-    when('validTill', triple('DOI', dcat.endDate,   literal('validTill', xsd.date))),
+    // when('validFrom', triple('DOI', dcat.startDate, literal('validFrom', xsd.date))),
+    // when('validTill', triple('DOI', dcat.endDate,   literal('validTill', xsd.date))),
     
     when('relatedSkosConcepts',
       split({
@@ -54,6 +74,17 @@ export default async function (): Promise<Etl> {
         key: '_relatedSkosConcepts'
       }),
       objects('DOI', dct.subject, iris('_relatedSkosConcepts'))
+    ),
+
+    // FIXME, this needs to have a dsv:Column object in between the schema and the variable
+    // See https://doi.org/10.1145/3587259.3627559
+    when('variables',
+      split({
+        content: 'variables',
+        separator: ' ',
+        key: '_variables'
+      }),
+      objects('_DOIschema', iri(prefix.dsv, str('hasVariable')), iris('_variables'))
     ),
     toTriplyDb(destination),
     uploadPrefixes(destination),
