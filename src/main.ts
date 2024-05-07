@@ -67,7 +67,7 @@ export default async function (): Promise<Etl> {
   const etl = new Etl(destination)
   const cat_quads =await getRdf("https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/")
   const rq_quads = await getRdf("https://mcal.odissei.nl/cv/researchQuestionType/v0.1/")
-  const cf_quads = await getRdf("https://mcal.odissei.nl/cv/contentFeature/v0.1/")  
+  const cf_quads = await getRdf("https://mcal.odissei.nl/cv/contentFeature/v0.1/")
 
   etl.use(
     // fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
@@ -369,7 +369,7 @@ export default async function (): Promise<Etl> {
       [a, bibo.Journal],
       [dct.title, 'journal']
     ),
-    
+
     async (ctx, next) => {
       ctx.store.addQuads(cat_quads)
       ctx.store.addQuads(rq_quads)
