@@ -53,7 +53,7 @@ export default async function (): Promise<Etl> {
   etl.use(
     fromXlsx([Source.url(cbs_projects_before), Source.url(cbs_projects_after)]),
     when('Projectnummer',
-        addIri({ // Generate IRI for article, use DOI for now
+        addIri({ // Generate IRI for CBS project, use ODISSEI namespace for now
             content: 'Projectnummer',
             prefix: prefix.cbs_pr,
             key: '_IRI'

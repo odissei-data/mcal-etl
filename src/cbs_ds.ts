@@ -36,7 +36,7 @@ const destination = {
 export default async function (): Promise<Etl> {
   const etl = new Etl(destination)
   etl.use(
-    fromCsv(Source.file('cbs.csv')),
+    fromCsv(Source.file('cbs.csv')), // generate by running ./dv2cvs.py if file is missing
     //logRecord(),
     addHashedIri({
       prefix: prefix.odissei_kg_schema,
