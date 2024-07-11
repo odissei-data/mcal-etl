@@ -3,6 +3,10 @@
 In order to be able to publish linked data to an online data catalog, TriplyEtl must first be configured.
 This is done with the following steps:
 
+```sh
+yarn install
+```
+
 ## 1. Create a TriplyDB API Token
 
 **NOTE** *This step can be ommitted if you already created or provided your token during setup of your project*
