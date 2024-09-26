@@ -5,7 +5,7 @@ import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
 
 // Declare prefixes.
-const prefix_base = declarePrefix('https://mcal.odissei.nl/')
+const prefix_base = declarePrefix('https://w3id.org/odissei/ns/mcal/')
 const prefix_cv_base = declarePrefix(prefix_base('cv/'))
 
 const prefix = {
@@ -58,16 +58,16 @@ const destination = {
 
 const getRdf = async (url: string) => {
   const ctx = new Context(new Etl())
-  await loadRdf(Source.TriplyDb.rdf('odissei', 'mcal', {graphs: [url]}))(ctx, () => Promise.resolve())
+  await loadRdf(Source.TriplyDb.rdf(destination.account, destination.dataset, {graphs: [url]}))(ctx, () => Promise.resolve())
   return ctx.store.getQuads({})
 }
 
 
 export default async function (): Promise<Etl> {
   const etl = new Etl(destination)
-  const cat_quads =await getRdf("https://mcal.odissei.nl/cv/contentAnalysisType/v0.1/")
-  const rq_quads = await getRdf("https://mcal.odissei.nl/cv/researchQuestionType/v0.1/")
-  const cf_quads = await getRdf("https://mcal.odissei.nl/cv/contentFeature/v0.1/")
+  const cat_quads =await getRdf("https://w3id.org/odissei/ns/mcal/cv/contentAnalysisType/v0.1/")
+  const rq_quads = await getRdf("https://w3id.org/odissei/ns/mcal/cv/researchQuestionType/v0.1/")
+  const cf_quads = await getRdf("https://w3id.org/odissei/ns/mcal/cv/contentFeature/v0.1/")
 
   etl.use(
     // fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
