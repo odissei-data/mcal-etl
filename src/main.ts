@@ -5,8 +5,9 @@ import { bibo, dct, a } from '@triplyetl/etl/vocab'
 import { validate } from '@triplyetl/etl/shacl'
 
 // Declare prefixes.
-const prefix_base = declarePrefix('https://w3id.org/odissei/ns/mcal/')
-const prefix_cv_base = declarePrefix(prefix_base('cv/'))
+const prefix_odissei = declarePrefix('https://w3id.org/odissei/')
+const prefix_base = declarePrefix(prefix_odissei('ns/mcal/'))
+const prefix_cv_base = declarePrefix(prefix_odissei('cv/'))
 
 const prefix = {
   orcid: declarePrefix('https://orcid.org/'),
@@ -65,9 +66,9 @@ const getRdf = async (url: string) => {
 
 export default async function (): Promise<Etl> {
   const etl = new Etl(destination)
-  const cat_quads =await getRdf("https://w3id.org/odissei/ns/mcal/cv/contentAnalysisType/v0.1/")
-  const rq_quads = await getRdf("https://w3id.org/odissei/ns/mcal/cv/researchQuestionType/v0.1/")
-  const cf_quads = await getRdf("https://w3id.org/odissei/ns/mcal/cv/contentFeature/v0.1/")
+  const cat_quads =await getRdf("https://w3id.org/odissei/cv/contentAnalysisType/v0.1/")
+  const rq_quads = await getRdf("https://w3id.org/odissei/cv/researchQuestionType/v0.1/")
+  const cf_quads = await getRdf("https://w3id.org/odissei/cv/contentFeature/v0.1/")
 
   etl.use(
     // fromCsv(Source.file(['../mcal-cleaning/Data/Mcalentory.csv'])),
