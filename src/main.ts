@@ -1,4 +1,4 @@
-import { Context, Etl, Source, declarePrefix, environments, fromCsv, loadRdf, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
+import { Context, Etl, Source, Destination, declarePrefix, environments, fromCsv, loadRdf, toTriplyDb, uploadPrefixes, when } from '@triplyetl/etl/generic'
 import { addIri, custom, iri, iris, lowercase, pairs, split, triple } from '@triplyetl/etl/ratt'
 // import { logRecord } from '@triplyetl/etl/debug'
 import { bibo, dct, a } from '@triplyetl/etl/vocab'
@@ -9,7 +9,8 @@ const prefix_odissei = declarePrefix('https://w3id.org/odissei/')
 const prefix_base = declarePrefix(prefix_odissei('ns/mcal/'))
 const prefix_cv_base = declarePrefix(prefix_odissei('cv/'))
 
-// const contentAnalysisTypeSource = Source.url('https://raw.githubusercontent.com/odissei-data/vocabularies/main/mcal/ContentAnalysisType.ttl')
+const contentAnalysisTypeSource  = Source.url('https://raw.githubusercontent.com/odissei-data/vocabularies/main/mcal/ContentAnalysisType.ttl')
+const researchQuestionTypeSource = Source.url('https://raw.githubusercontent.com/odissei-data/vocabularies/refs/heads/main/mcal/ResearchQuestionType.ttl')
 
 const prefix = {
   orcid: declarePrefix('https://orcid.org/'),
@@ -68,7 +69,8 @@ const getRdf = async (url: string) => {
 
 export default async function (): Promise<Etl> {
   const etl = new Etl(destination)
-  // await etl.copySource(contentAnalysisTypeSource, Destination.TriplyDb.rdf(destination.account, destination.dataset, {}))
+  await etl.copySource(researchQuestionTypeSource, Destination.TriplyDb.rdf(destination.account, destination.dataset, { defaultGraph: prefix.rqt}))
+  await etl.copySource(contentAnalysisTypeSource,  Destination.TriplyDb.rdf(destination.account, destination.dataset, { defaultGraph: prefix.cat}))
 
   const cat_quads =await getRdf("https://w3id.org/odissei/cv/contentAnalysisType/v0.1/")
   const rq_quads = await getRdf("https://w3id.org/odissei/cv/researchQuestionType/v0.1/")
