@@ -1,5 +1,11 @@
 # mcal
 
+## 0. Software dependecies
+We assume you have the following software packages installed and available in your command line interface:
+- git
+- node.js (should come with npm and npx)
+- yarn
+
 In order to be able to publish linked data to an online data catalog, TriplyEtl must first be configured.
 This is done with the following steps:
 
