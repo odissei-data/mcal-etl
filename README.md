@@ -54,6 +54,16 @@ If you create other ETL's with different filenames (eg. "`src/my-other-etl.js`")
 npx etl lib/my-other-etl
 ```
 
+For MCAL, the main ETL depends on some other steps that need to be done before you can run the main ETL script.
+As part of the main ETL we run a SHACL validation step that includes rules to see if the SKOS concepts URIs 
+we use in the generated KG are actually declared as instances of skos:Concept. For this, we need to copy the 
+corresponding vocabularies into the ETL environments. 
+vocab that is generated in src/cv-contentFeature.ts, so you need to run this first if you start with an empty dataset:
+```sh
+npx etl lib/cv-contentFeature 
+npx etl
+```
+
 ## 3. Acceptance/Production mode
 
 *Nite: this section migt  not be applicable if you do not use a [DTAP](https://en.wikipedia.org/wiki/Development,_testing,_acceptance_and_production) strategy.*
