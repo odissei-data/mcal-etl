@@ -4,8 +4,10 @@ import { logRecord } from '@triplyetl/etl/debug'
 import { a, skos } from '@triplyetl/etl/vocab'
 
 // Declare prefixes.
+const prefix_odissei = declarePrefix('https://w3id.org/odissei/')
+const prefix_cv_base = declarePrefix(prefix_odissei('cv/'))
 const prefix = {
-  cf: declarePrefix('https://mcal.odissei.nl/cv/contentFeature/v0.1/'),
+  cf: declarePrefix(prefix_cv_base('contentFeature/v0.1/')),
 }
 
 // Declare input sources:

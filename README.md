@@ -1,7 +1,17 @@
 # mcal
 
+## 0. Software dependecies
+We assume you have the following software packages installed and available in your command line interface:
+- git
+- node.js (should come with npm and npx)
+- yarn
+
 In order to be able to publish linked data to an online data catalog, TriplyEtl must first be configured.
 This is done with the following steps:
+
+```sh
+yarn install
+```
 
 ## 1. Create a TriplyDB API Token
 
@@ -48,6 +58,16 @@ If you create other ETL's with different filenames (eg. "`src/my-other-etl.js`")
 
 ```sh
 npx etl lib/my-other-etl
+```
+
+For MCAL, the main ETL depends on some other steps that need to be done before you can run the main ETL script.
+As part of the main ETL we run a SHACL validation step that includes rules to see if the SKOS concepts URIs 
+we use in the generated KG are actually declared as instances of skos:Concept. For this, we need to copy the 
+corresponding vocabularies into the ETL environments. 
+vocab that is generated in src/cv-contentFeature.ts, so you need to run this first if you start with an empty dataset:
+```sh
+npx etl lib/cv-contentFeature 
+npx etl
 ```
 
 ## 3. Acceptance/Production mode

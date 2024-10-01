@@ -14,6 +14,8 @@
 
    ```
    TRIPLYDB_TOKEN={your-token-from-step-3}
+   USER=odissei
+   ENV="Acceptance"
    ```
 
 5. Run the following commands:
